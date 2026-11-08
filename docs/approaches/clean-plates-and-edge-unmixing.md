@@ -32,7 +32,28 @@ Outside alpha 0 the colours are bled outward (push-pull). Result: the dark ink o
 
 Codex re-renders the whole frame on every edit (median Lab drift outside the target about 3.4-5). Composite the changed region back onto the source and feed that composite, not the raw output, into the next step. Check alignment before building on a plate, and resize if the output is off by 1 px in width.
 
-For added props, a difference matte (before vs after the edit) plus SAM refinement on the changed region gave the cut-out, with a convex-hull option for solid convex props such as hats, bottle and book. Check the alpha holds only the object, with the contact shadow in a separate file.
+For added props, a difference matte (before vs after the edit, [diff_matte.py](../tools/cutout/diff_matte.py)) plus SAM refinement on the changed region ([sam_refine.py](../tools/cutout/sam_refine.py)) gave the cut-out, with a convex-hull option for solid convex props such as hats, bottle and book. Check the alpha holds only the object, with the contact shadow in a separate file.
+
+### 4. Soft layers painted on a plain canvas
+
+Clouds, mist, steam and smoke need no segmenter. Have Codex paint them onto a plain canvas in the plate's colours (style crop attached as reference only, about 12% clear margin at each end so the band tiles), then un-mix: [docs/tools/codex/extract_soft_layer.py](../tools/codex/extract_soft_layer.py).
+
+- Per row, background = median of the left/right margins, smoothed and interpolated across x. Alpha = projection of (P - bg) onto (Cwhite - bg), Cwhite = median of the brightest 0.3% of pixels; colour = bg + (P - bg) / alpha; alpha floored at 0.03; ends faded with a smoothstep so it wraps.
+- Steam: un-mix against two end members (lit white and a cool shade); check the margin std first (below 0.7 per channel means a truly flat canvas). A rotated vertical tile works for steam. Noise-threshold steam looked like chalk dust and a constant-width strand read as a drawn ribbon.
+- Clouds over a gradient sky (no flat canvas): fit a robust cubic 2-D polynomial per channel to cloud-free sky pixels (rejecting clouds, roofs, trees, lamp halos), take alpha from how far a pixel is pulled from the fit toward the cloud colour, and un-mix so the rest frame equals the painting (error 0.1 levels). Only cut clouds that sit inside the sky at rest; a cloud cut by a roof needs an invented hidden end (the cloud mirrored about the roofline worked; a slab banded). The strip must cover the whole sky range or a hard cut appears at its box edge. A swinging lantern hung against plain sky is cut the same way (quadratic gradient plate around it, used only where alpha > 0).
+- More on sky layers: [sky-matte-at-a-fitted-horizon.md](sky-matte-at-a-fitted-horizon.md).
+
+### 5. Sprites on a known flat background
+
+A hero sprite generated on a flat colour (the koi on flat jade green, border std under 0.7) needs no segmenter either.
+
+- Alpha from colour distance to the background, edge colours un-mixed as F = bg + (C - bg) / alpha.
+- To split fins from the body, fit a degree-7 polynomial to the per-column half-width of the silhouette skipping fin bumps; whatever lies outside it is fin; the tail root is the narrowest column in the rear 12-42%. Rigid-jointed pieces need overlap at the joints so gaps do not open when they rotate.
+- Generate sprites with a crop of the chosen plate as the style reference and a pose reference sheet; all five varieties came out first time.
+
+### 6. Keep the original pixels, change occupancy
+
+Warping a whole image gave jelly. Letting cloud edges retreat to reveal a generated clean backing plate kept the painting intact (Luminous Streams). Contract: front layer = original minus plate x (1 - alpha), so zero effect reproduces the source exactly. Compare "effect off" against the approved render each round and measure that nothing changed outside the marked regions. Stretched adjacent-pixel backing streaked on larger reveals and was replaced by a generated plate. Test at large shader time (1000, 10000) too: a blend before a sine or before advection accumulates spatial frequency and shows as tight scanlines only late.
 
 ## What failed
 
@@ -51,6 +72,8 @@ For added props, a difference matte (before vs after the edit) plus SAM refineme
 - Binary alpha cannot represent glass. Keep shine on lens pixels only and fizz inside the liquid mask.
 - `codex exec`: a trailing `-` after `-i <img>` is read as another image. Write prompts as UTF-8 (a CP1252 "é" once broke a run). Create log folders before redirecting into them (the "step 1 error" was a shell redirect into a missing `steps/` folder).
 
-- Koi Garden: one Codex edit re-lit the whole plate (day to dusk) and two chained edits removed the branch, then the pads, from it. A Codex re-render drifts up to about 1 px and shifts tone, so each output was registered back onto the old plate's pixel grid (DIS optical flow on local-contrast-normalised high-pass luminance, flow smoothed hard, structure under the removed object excluded), which kept every mask and the steering field valid. Only the removed object's neighbourhood came from the clean render, feathered and tone-matched, so the rest stays the registered re-light. Pad drop shadows were rebuilt as an alpha from painting vs clean plate and baked under each pad.
+- Each Codex edit re-renders the frame, and a repaint that agrees with the painting on only 84-93% of the visible plant pixels leaves painted plants standing still beside moving neighbours. That is why Summer Crossing drew whole Codex plants over a Codex ground and accepted differences from the painting at rest, instead of forcing every visible pixel to be the painting's (see [whole-plants-from-a-painting.md](whole-plants-from-a-painting.md)).
+- Removing two things in separate Codex edits and compositing both left twig tips of the first in the plate. Chain them instead: remove the second from the render that already lacks the first. Of two variants of a removal one kept a ghost twig inside a rock, so generate two and compare at 4x.
+- Koi Garden: one Codex edit re-lit the whole plate (day to dusk) and two chained edits removed the branch, then the pads, from it. A Codex re-render drifts up to about 1 px and shifts tone, so each output was registered back onto the old plate's pixel grid with [docs/tools/codex/register_plate.py](../tools/codex/register_plate.py) (DIS optical flow on local-contrast-normalised high-pass luminance, flow smoothed hard, vectors over 4 px rejected, structure under the removed object excluded), which kept every mask and the steering field valid. Only the removed object's neighbourhood came from the clean render, feathered and tone-matched, so the rest stays the registered re-light. Pad drop shadows were rebuilt as an alpha from painting vs clean plate and baked under each pad. Pads were cut with seeded `cv2.watershed`, an outlier-robust ellipse per pad trimmed stuck-on bits (pebbles), z-order came from which ellipse reaches under another, the hidden part of the lower pad was inpainted (16 px at 2x), and rest-pose error measured 0.2 levels.
 
 - [Summer Crossing](../../wallpapers/published/summer-crossing/README.md) road: moving shadows over a clean plate. A luminance map holds the ground's own cracks and stones, so moving it moves the ground (the ground moved instead of the shadows). Paint the plate in even sun and the shadows alone with Codex, then take the shape as how shaded the painting is against the plate: texture cancels because it's in both. Runtime is `plate * mix(warm, shadow colour, shape)`. Measure stillness with shadow strength 0: the ground must change 0.0000.

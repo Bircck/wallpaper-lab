@@ -33,11 +33,11 @@ How it got there:
 | Phase-crossfaded displaced copies of the painted water (early Straw Hat Cove builds: translated residual layers, texture advection) | Static, blurry or morphing. No changing crest shapes, near caustics stayed frozen, crossfades doubled highlights. See [motion-separate-layers-not-warps.md](motion-separate-layers-not-warps.md). |
 | Procedural surface replacing the painted water (a heightfield build, three replacement options, three shader experiments) | Rejected for losing the original look or for morphing. |
 | Texture-only caustics | Hazy, lost the painted cell look. |
-| Whole-scene Codex "empty" or "no deck" plates for hidden fill | The composition reframed and rocks and furniture moved,, so they could not be used. |
+| Whole-scene Codex "empty" or "no deck" plates for hidden fill | The composition reframed and rocks and furniture moved, so they could not be used. |
 | Per-object SAM prompts for furniture on the veranda | Fragmented masks. Depth-based split replaced them. |
 | Independently generated props placed over the lagoon | Style and perspective mismatch. Rejected for one cohesive scene. |
 | Live caustics vs the painted web | The live caustics are softer than the painted web (known limit; "painted light" keeps the original web). |
-| Sonic bay: generated seabed plus A1 caustic light, then the Straw Hat Cove water effects on the painted sea | Worse than Straw Hat Cove: yellow dots on the reef, then muddy because the painted sea already had waves and light lines. See the [Sonic Dock note](../../wallpapers/ideas/stopped-projects.md). |
+| Sonic bay: generated seabed plus A1 caustic light, then the Straw Hat Cove water effects on the painted sea | Worse than Straw Hat Cove: yellow dots on the reef, then muddy because the painted sea already had waves and light lines. The project was stopped. |
 
 ## A night lake on a cel painting ([Moon Cat](../../wallpapers/published/moon-cat/README.md))
 
@@ -49,7 +49,27 @@ Verdict: of three options, only B was acceptable. B = a soft mirror of the lit f
 - **Calm plate**: a Codex edit of the same crops ("perfectly calm, no reflections, soft base tones"), tone-matched at 90 px with the old reflections excluded, bled past the mask.
 - **Mirror without a scene pass**: bake the lit far shore (base + lights) into a texture and give every water pixel its own mirror axis, the top of its vertical run of water, so islands and side bays mirror about their own shore. Smooth the axis along x with a 1-D bilateral filter: 1-3 px notches in the shoreline otherwise draw faint boxes in the reflection.
 - **Grazing perspective**: ground x = dx/dy and z = F/dy with F about the focal length (2000 art px here). With F 20x too small, the glitter came out as a honeycomb of round blobs instead of long thin crests.
+- **Glint cell size must not vary continuously with depth.** That produced diagonal streaks in Straw Hat Cove; two fixed grids blended by depth fixed it.
 - **Twinkle comes from size, not only speed**: crisp dashes under ~3 screen px at 1080p alias between pixel rows as they drift and read as twinkle, even on a 6-13 s wave clock. Reflections of small lights mirrored far from their shore did the same. Measured with a 3-D (x, y, t) blob tracker on 30 fps frames: a glint born and dead within 0.5 s counts as a twinkle.
+
+## Rock reflections on a mirror pass ([Golden Shallows](../../wallpapers/published/golden-shallows/README.md))
+
+- Give only the near rocks their own mirror axis (the waterline above each pixel, smoothed along x, widened 14 px) and store a rock id. The shader keeps a mirrored sample only if it lands on the same rock and otherwise falls back to the horizon mirror. Per-run axes for far objects disagreed between neighbouring columns (the headland reflection jumped), and without the id the mirror under a front rock picked up the rock behind it.
+- Clear shallows (seabed seen through the mirror near the viewer, a slow golden caustic web) beat added ripple lines in the same lab and became the tuned look.
+
+## Reflections in a painted puddle (Rain Lantern Alley, shelved)
+
+1. A mirrored-reflection zone is a box. Glow added inside it (lamp bloom) is clipped at the box edge and shows as a straight-edged halo at every moment. Add the bloom as its own pass mirrored about each water line and faded toward the puddle rim, widen the zone feather (22-24 px worked, 10-14 did not) and fade reflected clouds before the zone edge.
+2. Apply lightning once, at the end, by a colour test for blue sky times the puddle mask, so painted and mirrored reflection are lit alike.
+3. A lantern's reflection must be a true mirror that swings with it. Upright copies read as a mistake and were the brightest thing in the lower half.
+4. More rings near the lamp reflections, and bigger drips landing by a lamp two times in three, tie the water to the light.
+5. Check halos on 3x brightness-boosted 1:1 crops at the gust peak and at the flash.
+
+## A dark pond at dusk (Koi Garden, shelved)
+
+- A drifting warm glint path from the lantern read as a scatter of dashes when made of specks and as stains when soft; warm patches on top read as haze and lines as doodles. Modulating the painted warm light changed only 0.4 of 255 levels and was invisible.
+- What made the dark half read as water: a cool moonlit lift toward the upper right (open-water mean luminance 19 to 28, p2-p98 spread 20-37 against 13-26) plus two slow, sideways-stretched bands of reflected sky.
+- A day-to-dusk Codex relight left a flat navy slab. Plan the tonal gradient before building on it.
 
 ## A calm sunlit sea ([Summer Crossing](../../wallpapers/published/summer-crossing/README.md), rounds 3-6; round 6 kept)
 
@@ -58,12 +78,15 @@ Verdict: of three options, only B was acceptable. B = a soft mirror of the lit f
 - **Reflections as narrow columns.** A full soft mirror of big clouds lifted the deep blue into pale lilac. A strip sharp in x and smeared in y, reading column peaks and fading with distance, keeps the blue between them and still follows the real clouds overhead.
 - **Tone-match the calm plate to the painting (85%).** Codex's calm repaint came back with a teal cast that a slider can't remove.
 - **Far plant pockets:** sea pixels painted inside far trees stay frozen while the sea moves. A pass after those pieces repaints them with live water, using a mask from the pieces' own atlas.
+- **Far trees that sway** leave whatever was painted into the sea at their rest spots (blue specks, pale surf lines, dark outlines). Skip the pocket pass for moved crowns, give the sea part its own coverage mask (R = where the clean plate replaced the old far plate, G = its sea) and treat sea-coloured pixels in the Codex plants as gaps. Dark teal tree shadows read as sea and hollowed crowns unless "sea" also requires brightness.
 
 **Round 4: rigid sheets felt bad live.** Watched live, all of it looked wrong. Tracked speed showed why: +9 to +10 px/s sideways almost everywhere, a sheet sliding, which water doesn't do. Replaced by real waves on a perspective plane, each at its own speed (w^2 = g k), filtered wave by wave against the pixel's footprint, tilting the reflected ray. They comb a layer holding the painting's own reflections (painted sea minus open tone), which drifts with the clouds. Far cheaper to make than painted marks, 24 sines per sea pixel cost nothing measurable at 1080p, and with waves off the sea stays close to the painting. Two crossing wave trains give lenses; a narrow fan gives full-width lines. None of the variants looked as good as the painting. Wide soft bands read as motion blur, and the painting's fine marks were gone.
 
 **Round 5: the painting stays, only its own marks move.** Lift the fine marks off the painting (painted minus a short vertical blur), run two copies toward the shore at perspective speed, fading in and out in turn at constant contrast, and add only differences to the painting. Any still frame is painted pixels. Measure the painted marks first (here 1-1.5 art px tall, 20-40 long, +-5 levels) and stay at that scale. Moving the soft pillars with their clouds turned them into pale blobs, so they stay and only sway. Both the newly painted marks and the near-static versions were rejected.
 
 **Round 6, what was kept: the round 3 water plus rows of wave crests, all moving one way.** Ripples drawn over the painting, in any form, were rejected: near-still painted-scale marks read as nothing happening, and ripple layers drifting left and right looked jittery. Moving ripple fields on the calm plate didn't save them either. What was picked (not perfect, but far better, then locked as good enough) is the round 3 engine over the calm plate (marks on sliding sheets, cloud columns, gust patches) with rows of crests rolling toward the shore: spaced in log depth (about 28 art px apart at the shore, 10 mid sea, faded out where closer than a few screen px), each a thin pale line with a darker face on its shore side, broken into pieces that belong to their crest and drift right with the wind. Kept faint: Wave strength .2, gust patches 2.5, water speed .85. Lessons: replace the painted water instead of drawing over it, keep every moving layer going the same way, and judge clips made from exact frames, because a real-time recording's compression hides water detail a few levels deep.
+
+Final controls: the Sea slider is speed only (50 tuned, 0 stands still, 100 twice as fast), never a fade to the painting. Cloud reflections stay on the clouds' own clock so they still follow the clouds at Sea 0. A separate Wind slider must not drive the water (checked pixel-identical at Wind 0/50/100). Test for "all one way": track per-block speed sign over the open sea; a lowest value above -0.3 px/s counts as still.
 
 ## Moving a painting's own marks: rejected in every form ([Straw Hat Cove](../../wallpapers/published/straw-hat-cove/README.md) middle water)
 

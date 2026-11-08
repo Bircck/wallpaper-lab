@@ -1,5 +1,5 @@
-# wallpapers/<stage>/<slug>/: README, NOTES and package/ are tracked in full. making-of/ and wallpapers/ideas/
-# track code, notes and data; generated media, captures, frames, models and environments stay local.
+# The repo holds the finished wallpapers (README + package/), shared tools and technique docs.
+# Generated media, captures, frames, models and environments stay local.
 
 # Environments and caches
 .venv/
@@ -81,26 +81,11 @@ wallpapers/**/making-of/historical/lab/
 # The package is exactly what Wallpaper Engine loads and the Workshop gets.
 !wallpapers/*/*/package/**
 
-# Working files: build sources, notes, checks and agent instructions stay on disk but are not published.
-# The repo itself holds the finished wallpapers (README + package), shared tools, technique docs and ideas.
+# making-of/ is a scratch folder for one build. Its lessons go into docs/ when the wallpaper ships, then it is deleted.
 wallpapers/*/*/making-of/
 wallpapers/*/*/NOTES.md
-wallpapers/ideas/Working-ideas/*/making-of/
-wallpapers/ideas/Working-ideas/*/NOTES.md
-wallpapers/RELEASE-CHECKLIST.md
-wallpapers/release-review.html
-wallpapers/ideas/3D-attempts/
-docs/history/
-docs/approaches/batch-council/
-BACKLOG.md
-AGENTS.md
-CLAUDE.md
-PUBLIC-AUDIT.md
-.claude/
-
-# Shared model weights (Finegrain, 378 MB) and the GPU venv (4.9 GB): local only
+.claude/launch.json
+docs/tools/gpu.lock
 docs/tools/models/
 docs/tools/gpu-venv/
-
-# GPU lock file written next to docs/tools/gpu_lock.py
-docs/tools/gpu.lock
+docs/tools/cpu-venv/

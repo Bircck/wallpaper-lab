@@ -37,6 +37,7 @@ Save the prompt next to the output (`<id>-prompt.txt`) and the log (`<id>-codex.
 
 ## Gotchas
 
+- **Chain removals.** Two things removed in separate edits and composited left twig tips of the first; remove the second from the render that already lacks the first, and generate two variants to compare at 4x.
 - **Every edit re-renders the whole frame.** Median Lab drift outside the target was about 3.4-5. Composite only the changed region back onto the source and feed that composite, never the raw "after", into the next step (a per-prop edit script should do this).
 - **16:9 output is 1672x941, even when you ask for 3840x2160**. For a sharper master, upscale afterwards ([upscalers](upscalers.md)).
 - **Output can be 1 px off in size.** Resize it to the source and keep the raw file (`*-after-raw.png`).
@@ -49,9 +50,24 @@ Save the prompt next to the output (`<id>-prompt.txt`) and the log (`<id>-codex.
 - **Sky:** a cloudless sky edit is only trusted for true-sky pixels, colour-matched at low frequency to the painting.
 - **Do not regenerate a chosen base.** Keep the approved empty scene and edit from it.
 
+## Concept round (shared prompt blocks)
+
+Blocks that kept later steps possible; keep them identical across runs and swap only the medium phrase when a different style is wanted.
+
+- STYLE block: anime-background gouache look, crisp near silhouettes, soft gradients, no blur/grain/lens flare, no people/animals/text.
+- LAYER-FRIENDLY COMPOSITION block: main subject inside the central 70% of the width; sky a smooth gradient with clouds separate and not touching the horizon; water perfectly calm and glassy (no waves, foam, sparkle or painted light lines); do not paint rain, snow, fog, mist, smoke, light beams or fireflies; light sources glow with a contained halo; small movers (lantern, flag, boat) in front of a simple background with no thin railings, wires or leaves crossing.
+- Timing: three concepts take about 2 minutes (2 concurrent, 60-98 s each, all first-try in a batch of 12). Cap about 3 concurrent calls per agent.
+- Checks on the chosen concept: sky smooth over at least 15% of the frame (row-residual std under about 6), calm water, a silhouette against a plain background for every moving prop, main interest not at the far edges (21:9 crop).
+
+Ranking that held up: pick the concept with the cleanest value structure and the least busy detail. Rejected for effect work: glossy specular speckle over wet paving (fights rain and ripples), many tiles and foliage near the movers, crisp intricate foreground grass and walls, a hero prop overlapping clouds or busy areas, a symmetric pad ring (reads as generated), granite speckle. Look for a swinging lantern hung against plain sky (easiest matte), an open stage for the effect (a calm mirror puddle, a large open sea), and ask for more dark space above a steam source. A prop high in the frame (y near 120-220 of 941) needs a top-biased crop at 21:9; the moon likewise.
+
+## Ultrawide wings
+
+To make 16:9 art safe for 21:9, one Codex edit outpaints 120-140 art px on each side (the two outer bands blurred as placeholders, the centre kept byte-exact), then only the outer bands are kept, colour-shifted per row at the seam and cross-faded. Upscale the extended image and re-attach it to the exact 2x centre. A mirrored wing was tried first and read as obviously symmetric. Keep clouds and boats out of the wing prompt; masks in the wing repeat the painting's edge column. Result: 16:9 shows exactly the painting and 3440x1440 keeps the top and bottom focal features. Script: `codex/wings.py` (below).
+
 ## Scripts
 
-All in `docs/tools/codex/`; they are generic and take their inputs as arguments.
+All in `docs/tools/codex/`; they take their inputs as arguments. Cut-out helpers (segmenters, difference matte) are in `docs/tools/cutout/`.
 
 | What | Script |
 |---|---|
@@ -59,6 +75,9 @@ All in `docs/tools/codex/`; they are generic and take their inputs as arguments.
 | Clean plate: remove one thing and keep everything else | `run_plate.py --src scene.png --remove "..." [--keep "..."] [--n 3]` |
 | Second removal pass (for example a whole structure and its props) | `run_seaplate.py --remove "..."` |
 | Background layers: remove an element, still seabed, cloudless sky | `run_layers.py remove\|seabed\|clearsky [n] [--src path] [--what "..."]` |
+| Register a Codex re-render onto the original pixel grid (it drifts up to about 1 px and shifts tone): DIS optical flow on contrast-normalised high-pass luminance, flow smoothed hard, vectors over 4 px rejected, optional exclusion mask | `register_plate.py ref.png render.png out.png [exclude.png]` (or import `flow_to`, `apply_flow`) |
+| Ultrawide side wings, staged: prep, codex, merge, hires | `wings.py prep base.png --extra "..."`, then `codex`, `merge`, `hires` |
+| Soft layer (cloud, mist, steam, smoke) painted on a plain canvas to an RGBA tile | `extract_soft_layer.py canvas.png out.png [--mode mist\|steam] [--rotate]` ([how](../approaches/clean-plates-and-edge-unmixing.md#4-soft-layers-painted-on-a-plain-canvas)) |
 
 For prop-by-prop scene building, the same prompt shape applies with one object per edit; composite only the changed region back before the next step. After a prop edit, a difference matte against the previous step plus a SAM refinement gives the cut-out ([cutout-segmenters](cutout-segmenters.md)).
 

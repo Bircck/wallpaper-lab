@@ -58,4 +58,5 @@ node docs/tools/web-wallpaper-kit/verify.cjs wallpapers/published/summer-crossin
 
 - A cloud shadow crossing a train darkens it in whole columns, the shadow of the ground at its foot.
 - Sea reflection pillars stay where they are painted while the clouds drift over 12 minutes, so a pillar can sit under open sky.
+- GPU memory is about 217 MB at 1080p, 252 MB at 1440p and 342 MB at 4K, so 4K is over Wallpaper Engine's 256 MB guideline. Frame cost is 0.9-1.3 ms when calm and up to 2.9 ms while trains pass at 4K (GTX 1070 Ti); about 6% of one CPU core at 1080p and 30 FPS.
 - The express at Train speed 0 is drawn from a sharper paint that loads the first time it's needed, so the first slow express after a change can show the blurred paint for a frame.

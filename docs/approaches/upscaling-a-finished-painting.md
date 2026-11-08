@@ -7,7 +7,9 @@ Status: mixed. Worked for the art, but cost about 50 repaint rounds on one prop.
 - Upscale every painted layer with a spandrel 4x model, then Lanczos down to exactly 2x, so textures keep a 2:1 mapping
   onto the data grid the shader measures in (sample painted art by normalised UV, data by the 1x grid). Cut-outs get
   their colour bled into alpha 0 first (push-pull). Data textures are never upscaled.
-- Pick the model on a full-frame swap page. 4x-UltraSharp won over Remacri and anime ESRGAN.
+- Pick the model per scene on a full-frame swap page through the real shader. 4x-UltraSharp won over Remacri and anime ESRGAN on the cove and on Opaline, but wove a fine grid into the Luminous nebula where 4x Remacri was clean (see the mesh note below).
+- If the effects use the painting's pixel size (texel offsets, star detection, aspect), switch them to a fixed reference grid so upscaled art keeps parity with the original layers.
+- Masters only need to be sized for the target: Opaline's is 2200 px wide for 1080p at 88% crop; 1440p and ultrawide upscale about 1.3-1.8x.
 - Mipmap the upscaled painted textures: without them frame cost rose from 2.2 to 5.5 ms at 1080p.
 - Check water motion numerically (frame-to-frame change in a few regions): unchanged.
 - Cost on the 1070 Ti, headless: GPU ms/frame unchanged, texture memory 96 -> 296 MB, start-up
@@ -57,3 +59,7 @@ Golden Shallows drew the land and sky into a 1672x941 FBO (its mask grid) and st
 - **A mesh in the art.** UltraSharp sharpened a fine pattern in the original into a woven dot mesh on rock. Running it on the original softened by a 0.9 px Gaussian kept crisp brush edges with no mesh; 0.6 px left the mesh, Remacri was clean but added a dark rim, and Lanczos was soft. Replacing only a masked area needs nothing else: lock the colour to the master with a 3 px blur and stay well inside the land matte, so the silhouette can't change.
 - **The blur was the real complaint.** Shown all four full frames at 1:1, the blur fix with the art unchanged won over the mesh-free versions. A mesh that shows at 2x may not matter at the real screen size, so check at 1:1 before reworking the art.
 
+
+## A mesh in dark foliage (Summer Crossing)
+
+4x-UltraSharp wove a fine crosshatch mesh into dark foliage, visible at 2x and at 1080p (the same flaw as on the Golden Shallows rock above). Run it on the 1x original softened by a 0.9 px Gaussian (a mesh-free master) and use that master for the plant plates and everything built from them. For small far plants a Real-ESRGAN anime 6B upscale and a sharpened soft variant (unsharp sigma 1.6, amount 0.7, acceptable) were also offered; the far band ended up Codex-only anyway.

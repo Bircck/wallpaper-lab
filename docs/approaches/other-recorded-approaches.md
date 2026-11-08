@@ -18,6 +18,7 @@ Hokusai's Lake Suwa (public domain) is cut into pines, reeds, bushes and a boat 
 - Worked: OpenCV edge filtering and seeded GrabCut for the boat, region-constrained ink colour thresholds and manual silhouette review for pines, clean sky and lake donor patches for hidden areas. Water and sky are shader regions driven by masks, not extra cut-outs. An independent critique corrected ghost silhouettes, moving sky strokes, boat remnants and renderer alpha halos.
 - Failed: rembg u2netp (whole-image foreground only, not a usable depth stack), GrabCut on pines (captured sky patches), broad Telea fills of pines (smeared navy into the sky).
 - Limit: hidden fills are approximate, so keep canopy motion small (roughly 10 original px at most) and inspect motion extrema.
+- Later detail: polygons plus ink-colour thresholds and donor patches from the print's own pixels cut the flat woodblock print. Pines bend on one shared gust clock (travelling waves looked wrong). A generated crane only fit after being recoloured to the print's ink and paper tones. A 2x upscale was skipped for the release.
 
 ## [Luminous Streams](../../wallpapers/published/luminous-streams/README.md): keep the original pixels, reveal and fog around them (mixed, shipped)
 
@@ -25,11 +26,13 @@ The wallpaper animates one generated nebula image in a shader and keeps the sour
 
 - Worked: a user-painted cloud coverage mask embedded as is; layering one cloud bank over a hidden background with exact still recomposition before adding atmosphere; "edge reveal" where bank edges retreat to show a generated hidden nebula plate (only inside marked regions, with inward feathering to remove harsh seams); fog that is occluded behind the dark cloud silhouette through the shared coverage mask (191445 masked pixels stayed exactly unchanged at fog 0.8); lighting as light and shadow on original pixels; dust picked from five particle directions at 40%.
 - Failed: generated replacement clouds and drifting cut-outs (0.4), nearly invisible effects (0.5), global UV warp "jelly" (0.8), stretched adjacent-pixel backing for the reveals (replaced by a generated plate), and a fog that felt separate from the clouds.
+- Contract that kept it honest: front layer = original minus plate x (1 - alpha), so zero effect reproduces the source exactly. Every round compared "effect off" against the approved render and measured that nothing changed outside the marked regions.
+- Large shader time shows TV-like scanlines when a blend happens before a sine and accumulates spatial frequency, so test renders at time 1000 and 10000 too.
 - Open: approximate bank contours; no whole-bank hidden-plate reconstruction was claimed.
 
 ## Variants in the lab, a few sliders in the release (worked)
 
-For visual judgement calls, build two or three selectable versions in the lab with wide slider ranges and keep the baseline. After a version is picked, collapse to a few 0-100 sliders where 50 is the tuned look and 0 is off, and remove the variant buttons. Straw Hat Cove went from 41 properties to 12 this way. Wallpaper Engine's embedded browser crashed on `<select>` elements, so variants were cycling buttons in the lab panel.
+For visual judgement calls, build two or three selectable versions in the lab with wide slider ranges and keep the baseline. After a version is picked, collapse to a few 0-100 sliders where 50 is the tuned look and 0 is off, and remove the variant buttons. Straw Hat Cove went from 41 properties to 12 this way. Wallpaper Engine's embedded browser crashed on `<select>` elements, so variants were cycling buttons in the lab panel. Slider design rules are in [look-and-motion-rules.md](look-and-motion-rules.md).
 
 
 ## Blender block-out, Codex paint-over, ID-guided SAM (mixed)

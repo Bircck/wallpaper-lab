@@ -1,7 +1,6 @@
 # Wallpapers
 
 - [`published/`](published/): the finished wallpapers, all on the Steam Workshop. Each folder has a README and `package/`, which holds exactly what Wallpaper Engine loads.
-- [`ideas/`](ideas/README.md): shelved builds and notes on ideas that weren't made.
 
 | Wallpaper | Workshop item | Published |
 |---|---|---|

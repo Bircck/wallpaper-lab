@@ -44,6 +44,6 @@ Made with AI image generation: the painting was generated with OpenAI image mode
 - Canvas resolution uses CSS viewport pixels times render scale, including on DPR2.
 - `assets/light.png` (727 KB) is loaded but never shows, because coloured spill is off. Removing it needs a re-publish.
 
-## Browser cost / 2026-10-20
+## Cost
 
-GTX 1070 Ti, native resolution/DPR 1, sliders 50: draw plus synchronous readback medians 7.65/13.05/42.50 ms at 1080p/1440p/ultrawide (12 samples each). Separate cap 30 playback 30.32/29.99/29.99 FPS. Ultrawide readback varies widely (17.10-66.30 ms). Short browser probes include synchronization overhead and do not establish pure GPU cost or sustained Wallpaper Engine performance. Measured before the art upscale; the upscale itself changed 1440p cost from 20.2 to 20.4 ms.
+Headless Chrome on a GTX 1070 Ti, sliders at 50, re-measured 2026-11-02 on the released art: about 2.1 / 3.4 / 4.9 ms per frame at 1080p / 1440p / 3440x1440. Headless numbers are an upper bound, not a Wallpaper Engine measurement. Ready about 1.8 s after a cold start.

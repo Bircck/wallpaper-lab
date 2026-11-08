@@ -1,6 +1,6 @@
 # A genuinely fast vehicle on a painted scene
 
-Status: built for the [Summer Crossing](../../wallpapers/published/summer-crossing/README.md) express, with a painted version that melted the slats in the fast strip only (horizontal lines along the blur stay sharp and read as a comb). The express and its wake were accepted. The slow local with the same blur was too blurry, so this recipe is for fast vehicles only: a slow painted train should stay crisp. A code-drawn freight at 65 km/h was rejected, because at that speed you can see it is flat.
+Status: shipped in [Summer Crossing](../../wallpapers/published/summer-crossing/README.md). The express uses this recipe, with a painted version that melted the slats in the fast strip only (horizontal lines along the blur stay sharp and read as a comb). The same full blur made the slow local too blurry, so the local shipped with a tiny blur, a soft bob and turning wheels: see [A slower painted train](#a-slower-painted-train-the-local) below. A code-drawn freight at 65 km/h was rejected, because at that speed you can see it is flat.
 
 ## Problem
 
@@ -21,3 +21,16 @@ Making the glass of a painted train partly transparent lets the real scene pass 
 ## Seat it on the rail
 
 A side-on sprite that floats a few px off the near rail reads as pasted. Measure the rail rows from the painting. Also darken what's visible between the bogies: the sun can't reach under a train.
+
+## A slower painted train (the local)
+
+- Keep the blur tiny: shutter 0.08 of a frame's travel plus a 0.3 sharpness mix. A shutter of 0.35 read as too blurry. A slow local at 360-520 art px/s was accepted at 440.
+- Side-on bob should be slow and soft. A 1 px jittery bob read as wrong.
+- **Turning wheels.** Painted discs are plain, so rotating their own paint shows nothing. What worked: a Codex edit with the wheels magenta (a mask of where a wheel shows between frame and axle boxes, aligned to 0.2 px), then a second edit with the frame removed and whole wheels painted with uneven rust and brake dust. Fit the painted wheels as ellipses (under 1 px off), keep only the marks of the clean wheels (difference from the light ring, web only), add them to the painted disc and turn them at the rolling speed (about 2 turns/s), blurred over one frame's turn (about 25 degrees at 30 fps). Use marks at 4x Codex's contrast but less colour (full colour tinted the discs blue). A kymograph (angle across, one row per frame) verifies steady streaks, no reversals and the right direction.
+
+## Lighting and scheduling
+
+- Shade a train pixel with the cloud shadow of the ground at its foot, not at its own screen height. Otherwise a body just below the horizon samples the far sea's shadow and shows thin squashed bands sliding sideways ("water on the train"). Whole-column shadows are the accepted limit.
+- Schedule trains as per-kind forward chains with at least 6 s quiet between events. A speed change mid-pass keeps the position.
+- In a frame-driven rig, a slider drag that calls a "reschedule" restarting the loop with a zero time step freezes the scene (0.02x real time while dragging). Leave a running loop alone and rescale only the wait still to come.
+- Shipped in Summer Crossing: the painted six-car express at 2600 px/s with shutter 1, and the slow local above.

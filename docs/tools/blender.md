@@ -8,8 +8,8 @@ Blender is an offline authoring tool here. No wallpaper renders 3D live. What it
 | Toon-shaded car loop (EEVEE, ShaderToRGB ramps, inverted-hull ink, wheel refinement) | An exploration of an "illustrated driving" look, not a released wallpaper. |
 | Blender Ocean modifier baked to a normal atlas | Used for a water study; not confirmed to be what the shipped water uses. |
 | Cloth-simulated sheet ghost, the whole act simulated along the screen path, toon render (ShaderToRGB ramp, Freestyle ink) packed into a frame atlas | Shipped in the Moon Cat wallpaper. Recipe, failures and settings: [3d-cloth-sim-to-cel-sprite.md](../approaches/3d-cloth-sim-to-cel-sprite.md). |
-| 3D character and pier rendered to match a painted plate | Rejected twice (glossy-vinyl look, odd foot, blocky pier); the project was stopped. See [stopped-projects.md](../../wallpapers/ideas/stopped-projects.md). |
-| Real rigged bicycle plus a pedalling rider on a Blender Studio rig | Contacts under 1 mm and an exact geared loop, but the character never looked like the intended likeness. Project stopped. See [stopped-projects.md](../../wallpapers/ideas/stopped-projects.md). |
+| 3D character and pier rendered to match a painted plate | Rejected twice (glossy-vinyl look, odd foot, blocky pier); the project was stopped. See [animated-characters](../approaches/animated-characters.md). |
+| Real rigged bicycle plus a pedalling rider on a Blender Studio rig | Contacts under 1 mm and an exact geared loop, but the character never looked like the intended likeness. Project stopped. See [animated-characters](../approaches/animated-characters.md). |
 
 Rule of thumb: if 2D cut-outs stay unconvincing for an element, model it in 3D, render it to match the painting (toon/painted shading, same camera) and composite. The first wallpaper shipped that way is the Moon Cat sheet ghost.
 

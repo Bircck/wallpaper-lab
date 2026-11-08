@@ -32,3 +32,4 @@ python -I docs/tools/upscale/upscale.py <path to>/4x-UltraSharp.pth <out.png> <s
 - The script needs CUDA (`.cuda()`); it is not CPU-ready as written.
 - It upscales the whole painted frame, so painted waves and light lines are sharpened too.
 - Compare at 1:1 crops, not whole frames (`sheet.py`), against the Lanczos and Lanczos-plus-unsharp baselines from `baseline.py`.
+- UltraSharp can weave a fine grid mesh into dark foliage, rock or a nebula. Fix: run it on the 1x original softened by a 0.9 px Gaussian (0.6 px left the mesh). Remacri was clean on a nebula but added a dark rim on rock. Choose the model per scene on a full-frame swap page ([upscaling-a-finished-painting](../approaches/upscaling-a-finished-painting.md)).

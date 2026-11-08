@@ -4,7 +4,7 @@ One command-line tool for starting and releasing a Wallpaper Engine web wallpape
 
 Run it from the repo root: `./wl <command>` in Git Bash, `.\wl <command>` in PowerShell or cmd (those two don't search the current folder for plain `wl`; put the repo root on PATH to type `wl`). It is `tools/wl.cjs`, plain Node, using default Playwright, Chrome and ffmpeg locations for Windows that you can override with environment variables (see below).
 
-A `<slug>` is looked up in `wallpapers/in-progress`, `ready-to-publish`, `published` and `ideas`, so you never type the stage.
+A `<slug>` is looked up in `wallpapers/in-progress`, `ready-to-publish` and `published`, so you never type the stage.
 
 ## Commands
 
@@ -20,11 +20,13 @@ A `<slug>` is looked up in `wallpapers/in-progress`, `ready-to-publish`, `publis
 | `install <slug> [--dry-run] [--apply] [--force]` | Copies `package/` into `<WE>/projects/myprojects/<install folder>`, creating `myprojects` if it is gone, backs up an existing install once to `making-of/checks/host/installed-backup/`, moves files the package no longer has into that backup, then SHA-256-checks every file. `--apply` also opens it on Monitor0; without it the desktop is left alone. | `./wl install sunroom --dry-run` |
 | `probe <slug>` | Opens a copy of `package/` in its own 1920x1080 Wallpaper Engine window with an injected probe: properties arrive, frames counted, pause at 4 s and resume at 9 s, GL errors, and a capture at 12 s that must not be black. Writes `making-of/checks/host/native-verification.json` and `native-capture.png` (open it). | `./wl probe sunroom` |
 
-GPU work (`verify`, `gif`, `media`, `probe`) runs under `docs/tools/gpu_lock.py --timeout 10`; if the lock is still busy after 10 s it runs without it (`wallpapers/RELEASE-CHECKLIST.md` section 3, an optional local checklist). `WL_NOLOCK=1` skips the lock.
+GPU work (`verify`, `gif`, `media`, `probe`) runs under `docs/tools/gpu_lock.py --timeout 10`; if the lock is still busy after 10 s it runs without it (see [releasing a wallpaper](../docs/approaches/releasing-a-wallpaper.md)). `WL_NOLOCK=1` skips the lock.
 
 ## Notes
 
-`wl` GPU commands take the GPU lock themselves, so don't wrap them in `gpu_lock.py`. `install` and `probe` were derived from per-wallpaper `host.cjs` / `install_we.py` scripts; `probe` counts draw calls and forces `preserveDrawingBuffer` on the copy's WebGL contexts. `media` with `wl.json` options has had little use outside the skeleton.
+Two kit scripts are not wrapped by `wl` yet: `node docs/tools/web-wallpaper-kit/gpu_cost.cjs <package>` measures real GPU frame cost with the GPU timer query, and `node docs/tools/web-wallpaper-kit/audit_assets.cjs <package>` finds assets that are loaded but never drawn. Both are described in their file headers.
+
+`wl` GPU commands take the GPU lock themselves, so don't wrap them in `gpu_lock.py`. `install` and `probe` were derived from the per-wallpaper `host.cjs` / `install_we.py` scripts that the releases actually used, and have not themselves been run against Wallpaper Engine yet: check their output by hand the first time; `probe` counts draw calls and forces `preserveDrawingBuffer` on the copy's WebGL contexts. `media` with `wl.json` options has had little use outside the skeleton.
 
 ## Config it reads
 

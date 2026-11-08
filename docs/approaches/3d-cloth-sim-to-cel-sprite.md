@@ -2,7 +2,7 @@
 
 Status: worked. On the Moon Cat sheet ghost the result was rated far above Codex-drawn frame cycles (a ghost cat, a drawn pumpkin ghost, a rowing ferry), which looked weak next to it. It shipped in [Moon Cat](../../wallpapers/published/moon-cat/README.md) and is installed in Wallpaper Engine.
 
-Implementation, in short: a Blender script (`sheetghost.py`) simulates and renders the act, and the runtime side is the creatures block of the wallpaper's `main.js` (`crSheetGhost`, `cr5Sprite` and `CR_HIDE`). The result ships as a single atlas image.
+Implementation, in short: a Blender script ([`sheetghost.py`](../tools/blender/sheetghost.py)) simulates and renders the act, and the runtime side is the creatures block of the wallpaper's `main.js` (`crSheetGhost`, `cr5Sprite` and `CR_HIDE`). The result ships as a single atlas image.
 
 ## Problem
 

@@ -21,7 +21,27 @@ Result: `c6-guided-r4e3` (alpha) and `c6-final-defringed` (edge colours cleaned)
 6. Look at the result at 4x on checker and on magenta, next to what a 10-second manual cut would give, before building on it. Check both antlers.
 7. In the wallpaper the cut is used with edge colours un-mixed against the known clean plate. See [clean-plates-and-edge-unmixing.md](clean-plates-and-edge-unmixing.md).
 
-Choose per object. The earlier survey (eight objects, two scenes) found Finegrain best first for small props (straw hat, slingshot, vest, sword bundle, hanging hat), and SAM2 better for Chopper's hat because Finegrain dropped an antler. A neat silhouette can still be the wrong object, so check that every attached part is in.
+Choose per object. The earlier survey (eight objects, two scenes) found Finegrain best first for small props (straw hat, slingshot, vest, sword bundle, hanging hat), and SAM2 better for Chopper's hat because Finegrain dropped an antler (for the veranda straw hat it was Finegrain or SAM2). A neat silhouette can still be the wrong object, so check that every attached part is in. Decide up front whether attached parts (antlers, strings, cast shadow) belong in the layer.
+
+Scripts: the Finegrain and SAM helpers are in [docs/tools/cutout/segment.py](../tools/cutout/segment.py) (`finegrain(bgr, box, margin)`, `sam(bgr, points, box)`); the difference matte and SAM refinement for props added by a Codex edit are `diff_matte.py` and `sam_refine.py` in the same folder. Setup and run times: [cutout-segmenters.md](../tools/cutout-segmenters.md).
+
+## When the models keep missing
+
+- Fix membership first with a mask brush or path (Krita magnetic selection, Photopea Magic Cut, GrabCut scribbles), and only then soften edges. A segmenter that keeps picking the wrong part will not be fixed by a better matting pass.
+- Thin rigid parts (swords, straps) are often quicker with a manual path than with another model.
+- A flat woodblock print: rembg and GrabCut failed; polygons plus ink-colour thresholds and donor patches taken from the print's own pixels worked.
+- Useful minimum tool: box selector, model switch, positive/negative clicks, editable mask, background toggles (checker, black, white, magenta), aligned RGBA export with bounds and pivot.
+- Pixels exposed by motion (background and the occluded part of the object) need a clean plate or a repaint; a perfect mask cannot supply them.
+- Glass keeps the scene seen through it as opaque RGB with every segmenter. It needs a lens/liquid mask or a repaint, not alpha.
+
+## Cut-outs that sit against the sky (tree crowns)
+
+Used for the skyline pines in [Golden Shallows](../../wallpapers/published/golden-shallows/README.md).
+
+- Segment each crown on a 2x upscaled crop resized to 1024: SAM2 for crowns Finegrain faded or merged with a bush, Finegrain where SAM leaked, union for two.
+- Alpha = segmenter membership x the existing sky matte. The sky edge is then the proven one, and the rest frame equals the painting (0 of 2.07M pixels differed at wind 0).
+- Edge pixels between model and matte go to the nearest seed; needle specks within 8 px join the crown; cut at the trunk base. Where the crown overlapped canopy, continue matte and colour by normalised convolution (only a 1-3 px sliver ever shows).
+- Lit trees inside a dense canopy need no segmenter: a Codex edit "remove the lit trees, paint the darker forest behind" on a 3.2x crop with a magenta-tinted guide image (two groups of 1 and 3 regions) gave a plate on the first try (drift outside the regions 4.8-7.3 levels, registration under 0.5 px). Tone-match the plate to the painting at low frequency (sigma 14), then take membership as a Lab difference between painting and plate (threshold 24, inside a hand polygon grown 8-10 px). Thresholding alone gives holey silhouettes; a 13.5 px closing plus hole fill fixes it at the price of blobby edges that only show against the plate. Pale masses with no readable outline cut badly. A polygon edge that cuts a trunk in two lets a pale fragment slide off: add an exclusion box after the closing.
 
 ## What failed or was worse
 

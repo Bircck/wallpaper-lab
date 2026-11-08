@@ -17,7 +17,7 @@ Four 0-100 sliders; 50 is the tuned look. Moving one carries on from where thing
 
 ## How it was built
 
-From one cel-anime painting (style A). The painting was taken apart one element per Codex edit, so every moving part has a clean painted plate behind it. It was upscaled 2x and cut into layers. The cat is animated the way cel animation does it, never by warping one drawing: its head moves between complete drawn poses, with smooth 30 fps in-betweens made by frame interpolation (RIFE). Its tail bends along a small physics simulation. The chimney ghost is a Blender cloth simulation rendered toon-flat, the witch one drawing with simulated hair, skirt and broom. A small WebGL layer engine draws it all.
+From one cel-anime painting (style A). The painting was taken apart one element per Codex edit, so every moving part has a clean painted plate behind it. It was upscaled 2x and cut into layers. The cat is animated the way cel animation does it, never by warping one drawing: its head moves between complete drawn poses, with smooth 30 fps in-betweens made by frame interpolation (RIFE). Its tail bends along a small physics simulation. The chimney ghost is a Blender cloth simulation rendered toon-flat, the witch one drawing with simulated hair, skirt and broom. A small WebGL layer engine draws it all: about 1.6-2.1 ms per frame at 1080p and 1.9 ms at 4K in headless Chrome on a GTX 1070 Ti (an upper bound).
 
 ## Run it
 

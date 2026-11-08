@@ -30,12 +30,19 @@ CPU did not measurably change. See "Measuring" for why a single reading says not
 
 **Textures** (done by a packing script):
 
-- Find what is loaded but never drawn, and drop it. `plants.png`, an older cut, was still being loaded.
+- Find what is loaded but never drawn, and drop it. `plants.png`, an older cut, was still being loaded. "Bound" is not "drawn", and "drawn" is not "visible": Luminous Streams' `light.png` (727 KB) was bound every frame and changed 0% of pixels, and it shipped anyway. [`audit_assets.cjs`](../tools/web-wallpaper-kit/audit_assets.cjs) runs both tests: it records which image files are uploaded and bound during draws over an hour of scene time at the default sliders and at 100 on every slider, then swaps each file for a flat grey image and counts changed pixels at several scene times next to the noise of two identical renders. Moon Cat 1.0 dropped from 30 to 18 MB and about 90 MB of GPU memory this way. Run it before the first release, because removing a file later costs a re-publish.
 - Merge data maps into few RGBA maps, keeping only the channels the shader reads (five files became `map-a`, `map-b` and `masks`).
 - Crop to the rectangle in use. The seabed needs only the rows with water, the sky only the rows above the horizon, the cloth and vest only their own boxes. Align crops to 16 px so mipmaps stay on the same grid.
 - Flatten layers that are only ever seen one way. Inside regions where a moving piece covers the plate, only the clean plate is ever seen, so one plate is enough.
 - Bake the un-mix: above the horizon, store the foreground already un-mixed from the painted sky, with its colour pushed out over the sky pixels. Mipmaps then can't pull old sky back into leaf edges.
-- Upload one-channel maps as R8: `gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, gl.RED, gl.UNSIGNED_BYTE, img)`.
+- Upload one-channel maps as R8: `gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, gl.RED, gl.UNSIGNED_BYTE, img)`. Pixel-exact cuts beyond R8 (Summer Crossing, 287 to 217 MB total GPU process at 1080p and 412 to 342 MB at 4K, frames equal to within 2 levels from texture-coordinate rounding):
+  - Two-channel maps (sea and grass masks stored as R and G) go up as RG8.
+  - A colour+alpha atlas can be stored as one opaque image (premultiplied colour on top, alpha below, so the browser's alpha handling cannot change values) and split on the GPU into an RGBA8 texture and an R8 texture with `copyTexSubImage2D` from a temporary texture. Cut the art to the rows actually used (the top 480 of 941 art rows for clouds, trains and the far band).
+  - Masks used in one region (sky matte above the horizon, land masks below, a signal matte in a small box) are exact crops of one big mask file, uploaded R8 or RG8.
+  - An empty WebGL page alone costs about 130-210 MB at 4K, so 256 MB cannot hold there.
+- Lazy-load art that is only drawn in rare states. The sharp paint of a fast train is only visible under 14 art px of blur (slow train speed or a very high FPS), so it loads the first time that state is reached. The cost is that the first slow pass after a slider change can show the blurred paint for one frame; list that as a known limit.
+- Texture memory with 2x layers: RGBA8 is width x height x 4 bytes, times 4/3 for mipmapped layers above 1672 px. A 2x painted scene measured 296 MB against 96 MB at 1x.
+- A lossy WebP re-pack moves pixels well outside a small edit, a few by up to 10 levels. To see what a bake changed, compare the source PNGs, then let a same-frame screen diff judge the result.
 - Skip mipmaps on maps that are always read at level 0.
 - Encode RGB layers with sharp (`webp({quality: 95, smartSubsample: true, effort: 6})`). PIL has no smart subsampling and gave frame-wide noise. Use lossless with `exact` where colour under alpha 0 matters.
 
@@ -46,7 +53,9 @@ CPU did not measurably change. See "Measuring" for why a single reading says not
 - Measure first. Remove one effect at a time and time the link in a fresh context. On this scene, frost alone was 3.7 of 5.2 s, while the water everyone would have blamed was about 1.1 s.
 - Fold repeated calls into a loop, so only one inlined copy is compiled.
 - Start loops from a `uniform int` that is never set (always 0). The compiler can't unroll them then.
-- Make uniforms that never change into GLSL `const`, and delete debug views and old variants. The compiler then drops those paths.
+- Make uniforms that never change into GLSL `const`, and delete debug views and old variants. The compiler then drops those paths. On Luminous Streams (debug views, legacy modes, fixed saturation) the compile fell from 3.4 s to 1.1 s and the scene was ready at 1.8 s instead of 4.1 s, with pixels differing by at most 1 level on under 0.004%.
+- Paint a poster `<img>` of the opening frame first and load the script only after the poster has painted (WE's calls are queued and replayed), then fade the canvas in after its first frame. [TEMPLATE.md](../tools/web-wallpaper-kit/TEMPLATE.md) has the contract.
+- Plan the sampler budget: WebGL2 guarantees only 16 texture units per fragment shader, and one backdrop pass with sky, sea, plants, road and trains hit exactly 16. Merge two plates into one texture, and delete the textures of a rejected look before adding new ones.
 - `WEBGL_debug_shaders` shows the HLSL it actually gets.
 
 **Per frame:** set slider uniforms only when a slider or the size changed. Per frame, set only the clocks.
@@ -80,6 +89,8 @@ Result: first moving frame 3.6 s to 1.2 s. The full effects come slightly later,
 
 ## Measuring
 
+- Frame cost: use the GPU's own timer ([`gpu_cost.cjs`](../tools/web-wallpaper-kit/gpu_cost.cjs)). A synced readback overstates it several times over (Sunroom: 1.3-4.6 ms by readback, 0.56 ms by timer, 0.23 ms on a quiet card).
+- First frame: on the first 2x-layer audit, 6.5 s of first frame was 5.6 s of synchronous shader link plus 0.9 s of texture fetch, decode and upload. Split the two before optimising either.
 - GPU memory: the Windows counter `\GPU Process Memory(pid_*)\Dedicated Usage`. Numbers from it were stable across runs.
 - CPU: very noisy. The same build read 0.5% and 7.1% of one core. Never compare single readings, and alternate builds.
 - Frames: a frame-diff script renders both builds at the same seek times and slider values, at each aspect ratio and every slider at 0 and 100. A build against itself gave 0, so any difference is real. A separate perf report covers the rest.

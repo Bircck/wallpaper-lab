@@ -19,11 +19,23 @@ Approach summary (what to combine and why): [cutting-out-a-painted-prop](../appr
 | ViTMatte base (GPU) | Edge refinement from a trimap | Softens hard painted edges and shaves 40-100 px off the hat. Cannot fix wrong membership. Equivalent to pymatting in the hands-on test, no gain. |
 | pymatting (CPU, closed-form + `estimate_foreground_ml`) | 1 px alpha band around an already correct binary mask, and colour decontamination | Works with a trimap band of erode 1 / dilate 1. A 2 px band eats the dark ink outline. Wide bands add purple haze. |
 
+Per-object notes from the eight-target survey:
+
+- Veranda straw hat: Finegrain kept a thin strip of red cloth behind the left brim; Finegrain or SAM2 both usable.
+- Cola bottle: every segmenter kept the turquoise scene inside the neck as opaque RGB. Glass needs a lens/liquid mask or a repaint, not alpha.
+- Hanging foliage: Finegrain lost small leaves; BiRefNet and full-scene SAM kept blue water between leaves.
+- Sword bundle: the mask includes its binding cloth and does not separate individual swords. ToonOut and Lucida kept neighbours or returned near-empty masks on the vest, hanging hat and foliage.
+- Cropped SAM damaged the slingshot handle and sword pixels, so treat crop mode as a candidate, not a default.
+
 Not run (documented only): SAM3/3.1, SDMatte, Matte Anything, Background Matting V2, Qwen-Image-Layered, See-through, LayerD. Do not treat survey text as test evidence for them.
 
 ## Where to get the models
 
 All weights are local-only (gitignored, kept under `docs/tools/models/` or in your own cache). Downloads are large; fetch only what you need. Licences are as stated on the hosting page when checked (2026-11-08); re-check before shipping anything derived from them.
+
+To set up the two models the [cutout/](cutout/) scripts use:
+- Finegrain: `python docs/tools/cutout/download_models.py` (pins the revision and records the SHA-256).
+- SAM 2.1 Tiny ONNX: clone the two source repos and fetch the checkpoint as listed at the top of [`export_sam2_onnx.py`](cutout/export_sam2_onnx.py), then run it. It writes the encoder and decoders and checks them against PyTorch.
 
 | Model | Get it from | File | Licence |
 |---|---|---|---|
@@ -46,6 +58,14 @@ This was the cut that went into the finished cove wallpaper:
 
 A BiRefNet candidate (8-view test-time augmentation, dynamic-matting antler, plate gating, pymatting 1/1) was clean but lost the ink outline on the brim and had softer antler edges, so the Finegrain + SAM recipe stayed.
 
+## Typical run times
+
+Authoring times on a Ryzen 7 7800X3D with a GTX 1070 Ti, single passes (not a speed ranking):
+
+- CPU: Finegrain ONNX 5-15 s per crop; BiRefNet ONNX 9-19 s; ISNet-Anime about 1 s; SAM2.1-Tiny ONNX about 1 s to encode a full image, then 0.03-0.07 s per decode (about 0.8 s per config on a crop); pymatting closed-form 0.02-0.05 s after a few seconds of numba JIT.
+- GPU: SAM2.1-L 0.66 s per prompt after 0.9 s for the first; ToonOut and Lucida about 1.1 s; ViTMatte-B 0.03-0.33 s per crop; BiRefNet HR-matting at 2048 on a 288 px crop took 11 s with a 5.8 GB peak in fp16, so an 8 GB card has little room for larger inputs.
+- 4x supersampling and guided-filter steps take a few seconds.
+
 ## How to run
 
 Commands run from the repo root. `PY` is a CPU venv with onnxruntime and OpenCV, `GPU` the GPU venv ([python-environments.md](python-environments.md)).
@@ -56,7 +76,7 @@ GPU=docs/tools/gpu-venv/Scripts/python.exe
 ```
 
 ### Finegrain in a pipeline
-The ONNX file has no box input: the box is the crop. Preprocessing, common to all ONNX segmenters here: crop, RGB, resize to 1024 x 1024 (bilinear; Lanczos for upscaled crops), divide by 255, ImageNet mean/std, NCHW float32, run, apply sigmoid once to the logits, resize the probability back to the crop size. Keep this in one helper (`finegrain(bgr, box, margin)`, `sam(bgr, points, box)`) instead of rewriting it per script.
+The ONNX file has no box input: the box is the crop. Preprocessing, common to all ONNX segmenters here: crop, RGB, resize to 1024 x 1024 (bilinear; Lanczos for upscaled crops), divide by 255, ImageNet mean/std, NCHW float32, run, apply sigmoid once to the logits, resize the probability back to the crop size. That helper exists: [cutout/segment.py](cutout/segment.py) (`finegrain(bgr, box, margin)`, `sam(bgr, points, box, pick)`; model folders via `WL_FINEGRAIN` and `WL_SAM_DIR`, see its header). Import it instead of rewriting the preprocessing per script. For a prop added by a Codex edit, [cutout/diff_matte.py](cutout/diff_matte.py) makes the difference matte (prop alpha, contact shadow, aligned composite) from the before/after pair and [cutout/sam_refine.py](cutout/sam_refine.py) lets SAM decide the silhouette inside the changed region (`CONVEX=1` for solid convex props).
 
 ### SAM2.1-Large and HQ-SAM2 (GPU)
 Run on an upscaled square crop of 288-320 px (see pitfalls). SAM2.1 loads through `transformers.Sam2Model`; HQ-SAM2 needs the SysCV code on `sys.path`. Use fp32 on Pascal (see python-environments).
@@ -75,5 +95,8 @@ Run on an upscaled square crop of 288-320 px (see pitfalls). SAM2.1 loads throug
 - Hard-edged painting: a snapped binary mask plus a guided-filter edge beat ViTMatte and plate-projection alpha.
 - Binary alpha cannot represent glass; keep shine and fizz on lens/liquid masks.
 - Hand-placed windows (an antler window, two grey-gap touch-ups) are tied to that hat. A different object needs new ones.
+- SAM2.1-Tiny ONNX export (Microsoft's onnxruntime SAM2 exporter): the image encoder and multimask decoder passed parity against PyTorch, but the single-mask decoder failed (48 % of outputs beyond tolerance). Use only the multimask decoder and pick the candidate by eye: for the hat, candidate 2 (includes the red band) was right while candidate 3 had the higher model score but omitted the band, so the highest score can favour an incomplete object.
+- The Finegrain ONNX export was never parity-tested against its PyTorch source (revision pinned, results judged visually). The upstream Refiners repository is archived, so keep the working export.
+- ToonOut's checkpoint needs the training-wrapper key prefixes stripped before a strict weight load. Lucida: use the published v7 weights, not the experimental ComfyUI m35 checkpoint (a different artifact). BRIA RMBG-2.0 public weights are non-commercial. For ONNX segmenters, apply sigmoid exactly once to the logits.
 - Keep original RGB: write only alpha, and validate that the RGB is unchanged.
 - Always inspect a cut on checker and magenta at 4x before building motion on it. A SAM-Tiny cut made on the full image was rejected for blobby edges.

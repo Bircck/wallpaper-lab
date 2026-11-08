@@ -22,7 +22,6 @@ Each wallpaper folder has a README (what it does, settings, credits) and `packag
 - [docs/approaches/](docs/approaches/README.md): techniques for animating a painting as a wallpaper (water, plants, cut-outs, clean plates, sky mattes, preview GIFs, keeping a WebGL wallpaper small), including what didn't work.
 - [docs/tools/](docs/tools/README.md): the tools behind them, with commands and pitfalls: segmenters, upscalers, image generation, image-to-3D, Blender, headless checks, a web-wallpaper starter kit and a gallery page.
 - [tools/](tools/README.md): `wl`, a small command-line tool to start, check, record and package a Wallpaper Engine web wallpaper.
-- [wallpapers/ideas/](wallpapers/ideas/README.md): shelved builds and notes on ideas that weren't made.
 
 ## Licence
 
