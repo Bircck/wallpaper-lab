@@ -1,0 +1,7 @@
+# Byte-preserved files: no line-ending conversion, so recorded SHA-256 hashes survive checkout.
+wallpapers/published/luminous-streams/package/index.html -text
+wallpapers/published/luminous-streams/package/project.json -text
+wallpapers/published/luminous-streams/package/assets/** -text
+wallpapers/published/luminous-streams/package/wallpaper.js -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+wallpapers/published/living-print/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+wallpapers/published/straw-hat-cove/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

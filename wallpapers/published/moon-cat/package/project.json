@@ -1,0 +1,71 @@
+{
+	"contentrating" : "Everyone",
+	"description" : "Cute Halloween cat on a rooftop under a giant golden moon, with fun little animations all around it.\n\n[list]\n[*] The cat breathes, its tail sways and flicks, and now and then it turns to look right at you with a slow blink. Sniffs, licks, ear flicks, a sigh.\n[*] A little sheet ghost plays hide and seek behind the chimney: peek, duck, pop up, wave, giggle.\n[*] A witch and her cat fly across the moon, trailing sparkles.\n[*] Tiny ghosts carry lanterns up to the castle and its windows turn ghostly blue.\n[*] Will-o'-wisps rise from the lake and go out one by one.\n[*] Bats flit by.\n[*] Always on: chimney smoke, swaying trees, blinking town windows, a jack-o'-lantern throwing sparks, drifting clouds, ivy leaves that fall and grow back.\n[/list]\nSomething new drops by about every half minute.\n\n[h2]Settings[/h2]\n[list]\n[*] Ghosts & witch: how often the ghosts, the witch and the bats come by. 0 = never, 50 = about every half minute, 100 = one after another, no breaks.\n[*] Leaves: how often ivy leaves fall. 25 or less = none, 0 = the ivy holds still too.\n[*] Clouds: how fast the clouds drift. 0 = still.\n[*] Lights: the town's windows and the jack-o'-lantern. 0 = dark.\n[/list]\n50 is the tuned look. Brightness, contrast and colour are Wallpaper Engine's own options.\n\n[h2]Video[/h2]\nhttps://youtu.be/4pXhe8PB6ag",
+	"file" : "index.html",
+	"general" : 
+	{
+		"properties" : 
+		{
+			"clouds" : 
+			{
+				"fraction" : false,
+				"index" : 2,
+				"max" : 100,
+				"min" : 0,
+				"order" : 102,
+				"text" : "Clouds",
+				"type" : "slider",
+				"value" : 50
+			},
+			"creatures" : 
+			{
+				"fraction" : false,
+				"index" : 0,
+				"max" : 100,
+				"min" : 0,
+				"order" : 100,
+				"text" : "Ghosts & witch",
+				"type" : "slider",
+				"value" : 50
+			},
+			"leaves" : 
+			{
+				"fraction" : false,
+				"index" : 1,
+				"max" : 100,
+				"min" : 0,
+				"order" : 101,
+				"text" : "Leaves",
+				"type" : "slider",
+				"value" : 50
+			},
+			"lights" : 
+			{
+				"fraction" : false,
+				"index" : 3,
+				"max" : 100,
+				"min" : 0,
+				"order" : 103,
+				"text" : "Lights",
+				"type" : "slider",
+				"value" : 50
+			},
+			"schemecolor" : 
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "0 0 0"
+			}
+		}
+	},
+	"preview" : "preview.gif",
+	"ratingsex" : "none",
+	"ratingviolence" : "none",
+	"tags" : [ "Animal" ],
+	"title" : "Moon Cat - Cute Halloween Night",
+	"type" : "web",
+	"version" : 2,
+	"workshopid" : "3829769876",
+	"workshopurl" : "steam://url/CommunityFilePage/3829769876"
+}

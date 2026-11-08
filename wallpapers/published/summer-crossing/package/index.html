@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Summer Crossing</title>
+<style>
+/* Background = average colour of the painting. The canvas fades in over it after its first frame. */
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#507e9e center/cover no-repeat}
+canvas{position:fixed;inset:0;display:block;width:100%;height:100%;opacity:0;transition:opacity .6s}canvas.on{opacity:1}
+</style></head><body>
+<canvas id="scene"></canvas>
+<script>window.SC = { parts: [], part(p) { this.parts.push(p); } };</script>
+<script src="assets/plants-cp-data.js"></script>
+<script src="parts/wind.js"></script>
+<script src="parts/sky.js"></script>
+<script src="parts/plants.js"></script>
+<script src="parts/sea.js"></script>
+<script src="parts/road.js"></script>
+<script src="parts/train.js"></script>
+<script src="parts/crossing.js"></script>
+<script src="scene.js"></script>
+</body></html>

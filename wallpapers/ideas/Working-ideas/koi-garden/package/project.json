@@ -1,0 +1,70 @@
+{
+  "title": "Koi Garden",
+  "description": "A quiet temple-garden pond at dusk in Japanese ink and colour, seen from above. A stone lantern glows warm on the mossy bank while painted koi swim under lily pads that stir as they pass; the cherry branch sways and sheds petals, and a few fireflies drift near the light.",
+  "type": "web",
+  "file": "index.html",
+  "preview": "preview.jpg",
+  "general": {
+    "properties": {
+      "koi": {
+        "order": 0,
+        "text": "Koi (0 = none, 50 = five calm koi, 100 = eight, livelier)",
+        "type": "slider",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "fraction": false
+      },
+      "water": {
+        "order": 1,
+        "text": "Water (0 = still, 50 = tuned)",
+        "type": "slider",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "fraction": false
+      },
+      "wind": {
+        "order": 2,
+        "text": "Wind (0 = still, 50 = tuned)",
+        "type": "slider",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "fraction": false
+      },
+      "petals": {
+        "order": 3,
+        "text": "Petals (0 = off, 50 = tuned)",
+        "type": "slider",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "fraction": false
+      },
+      "glow": {
+        "order": 4,
+        "text": "Glow (0 = off, 50 = tuned)",
+        "type": "slider",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "fraction": false
+      },
+      "renderscale": {
+        "order": 5,
+        "text": "Render scale (%)",
+        "type": "slider",
+        "value": 100,
+        "min": 35,
+        "max": 100,
+        "fraction": false
+      }
+    }
+  },
+  "version": 1,
+  "tags": [
+    "Nature"
+  ],
+  "contentrating": "Everyone"
+}

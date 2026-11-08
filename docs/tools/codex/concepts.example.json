@@ -1,0 +1,12 @@
+{
+  "reference": null,
+  "base": "Wide 16:9 landscape desktop wallpaper, stylised painterly illustration, soft warm light, saturated but natural colour. Composition rules: keep a LARGE area of open, clearly visible water (at least a third of the frame), keep foreground objects clearly separated from the background with clean silhouettes, keep the horizon fairly low and calm. No text, no logos, no UI, no borders, no frame, no watermark. ",
+  "concepts": [
+    {"id": "c01-pier-afternoon", "use_reference": false,
+     "scene": "An old weathered wooden pier seen at a three-quarter angle, running out over a turquoise tropical bay with clear shallow water over coral and sand. A cold drink can with condensation and a small portable radio sit on the planks. A palm frond hangs into the top of the frame. A distant green island with a sailboat. Mid afternoon."},
+    {"id": "c02-golden-hour", "use_reference": false,
+     "scene": "A sun-warmed wooden jetty at golden hour over a calm lagoon, long warm reflections on the water, a string of small unlit lanterns along the railing, a sleepy fishing boat moored nearby, a distant headland with a lighthouse. Sun low on the right, pink and orange clouds."},
+    {"id": "c03-blue-hour", "use_reference": false,
+     "scene": "Blue hour on a wooden pier: a wide calm bay with a distant seaside town whose lights are just switching on, the sky fading from deep blue to peach at the horizon, first stars, the water mirroring the lights in long streaks."}
+  ]
+}

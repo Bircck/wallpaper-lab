@@ -1,0 +1,165 @@
+<!doctype html>
+<!-- Gallery: every wallpaper in the repo, found by reading the folders, so there is no list to keep up to date.
+     A wallpaper is wallpapers/<stage>/<slug>/package/; its title, description, preview and Workshop ID come from project.json.
+     A folder with only a README is listed by name under its stage; folders with neither are skipped. Only package/, project.json and README.md are
+     used, so it works on a fresh clone (no making-of/ or NOTES.md needed) and an unreadable folder is skipped instead of breaking the page.
+     Serve the repo root with "./wl serve" or "python -m http.server 8861 --bind 127.0.0.1" and open /docs/tools/gallery/.
+     It reads directory listings, so file:// won't do. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wallpaper gallery</title>
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d22;--mute:#6b6a72;--line:#e3e1dc;--accent:#6c5ce7}
+@media (prefers-color-scheme:dark){:root{--bg:#141418;--card:#1d1d23;--ink:#ecebf0;--mute:#9a99a3;--line:#2d2c34;--accent:#a99cff}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1400px;margin:0 auto;padding:24px 16px 64px}
+a{color:var(--accent)}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin-bottom:18px}
+h1{margin:0;font-size:28px}
+.hint{color:var(--mute);font-size:14px}
+h2{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:30px 0 12px;display:flex;gap:10px;align-items:baseline}
+h2 small{letter-spacing:0;font-weight:400}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.thumb{position:relative;display:block;aspect-ratio:16/9;min-height:0;overflow:hidden;background:#000;border:0;padding:0;width:100%;cursor:pointer}
+.thumb img{width:100%;height:100%;object-fit:contain;display:block;transition:filter .2s}
+.thumb .play{position:absolute;inset:auto auto 10px 10px;background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:4px 10px;border-radius:14px;opacity:0;transition:opacity .2s}
+.thumb:hover .play,.thumb:focus-visible .play{opacity:1}
+.thumb:hover img{filter:brightness(1.06)}
+.body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.body b{font-size:17px}
+.what{color:var(--mute);font-size:14px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.links{margin-top:auto;padding-top:4px;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px}
+.others{margin:12px 0 0;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px}
+/* player */
+#player{position:fixed;inset:0;background:#000;display:none;flex-direction:column;z-index:10}
+#player.open{display:flex}
+body:has(#player.open){overflow:hidden}
+#bar{display:flex;align-items:center;gap:10px;padding:6px 10px;background:#111;color:#eee;font-size:14px}
+#bar b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#bar button,#bar a{background:#2a2a30;color:#eee;border:0;border-radius:6px;padding:5px 11px;font:inherit;cursor:pointer;text-decoration:none}
+#bar button:hover,#bar a:hover{background:#3a3a42}
+#bar .hint{color:#888;font-size:12px}
+@media (max-width:600px){#bar .hint{display:none}}
+#frame{flex:1;border:0;width:100%;background:#000}
+</style></head>
+<body>
+<main>
+<header>
+  <h1>Wallpapers</h1>
+  <span class="hint">Read from the folders · click a picture to play it live</span>
+</header>
+<div id="sections">Reading folders…</div>
+</main>
+
+<div id="player" role="dialog" aria-label="Live wallpaper">
+  <div id="bar">
+    <button id="prev" title="Previous (←)">←</button>
+    <button id="next" title="Next (→)">→</button>
+    <b id="ptitle"></b>
+    <span class="hint">Default settings, no Wallpaper Engine sliders · Esc closes</span>
+    <a id="ptab" target="_blank" rel="noopener">New tab</a>
+    <button id="close">Close</button>
+  </div>
+  <iframe id="frame" title="Live wallpaper" allow="autoplay; fullscreen"></iframe>
+</div>
+
+<script>
+const ROOT = '../../../wallpapers/';
+const FIRST = ['published', 'ready-to-publish', 'in-progress']; // any other stage follows, by name
+const rank = s => FIRST.includes(s) ? FIRST.indexOf(s) : FIRST.length;
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const get = url => fetch(url, { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error(`${url}: ${r.status}`); return r; });
+
+// Names in a directory listing; folders end in a slash. A folder with its own index.html serves that instead, so it reads as empty.
+async function list(url) {
+  const page = new DOMParser().parseFromString(await (await get(url)).text(), 'text/html');
+  return [...page.querySelectorAll('li > a')].map(a => decodeURIComponent(a.getAttribute('href')));
+}
+const folders = names => names.filter(n => n.endsWith('/')).map(n => n.slice(0, -1));
+
+async function readFolder(stage, slug) {
+  const dir = `${ROOT}${stage}/${slug}/`;
+  const names = await list(dir).catch(() => []);
+  const w = { slug, dir, name: slug, readme: names.includes('README.md') };
+  if (!names.includes('package/')) return w;
+  const p = await get(dir + 'package/project.json').then(r => r.json()).catch(() => ({}));
+  return { ...w, built: true, name: p.title || slug, url: `${dir}package/${p.file || 'index.html'}`,
+    img: p.preview && `${dir}package/${p.preview}`, workshop: p.workshopid,
+    // First paragraph of the listing text, without Steam's [b] tags.
+    what: String(p.description || '').split(/\r?\n\s*\r?\n/)[0].replace(/\[[^\]]*\]/g, '').trim() };
+}
+
+function card(w) {
+  const links = [['New tab', w.url]];
+  if (w.workshop) links.push(['Workshop', `https://steamcommunity.com/sharedfiles/filedetails/?id=${w.workshop}`]);
+  if (w.readme) links.push(['README', w.dir + 'README.md']);
+  links.push(['Folder', w.dir]);
+  return `<article class="card">
+    <button class="thumb" data-play="${esc(w.slug)}" aria-label="Play ${esc(w.name)}">${w.img ? `<img src="${esc(w.img)}" alt="" loading="lazy">` : ''}<span class="play">▶ Play live</span></button>
+    <div class="body"><b>${esc(w.name)}</b><div class="what">${esc(w.what)}</div>
+    <div class="links">${links.map(([t, h]) => `<a href="${esc(h)}"${/^https?:/.test(h) ? ' target="_blank" rel="noopener"' : ''}>${esc(t)}</a>`).join('')}</div></div></article>`;
+}
+
+// Player: one live iframe at a time, emptied on close so the GPU goes quiet.
+const player = document.getElementById('player'), frame = document.getElementById('frame');
+let playable = [], cur = -1;
+function play(slug) {
+  cur = playable.findIndex(w => w.slug === slug);
+  const w = playable[cur];
+  document.getElementById('ptitle').textContent = `${w.name}  (${cur + 1}/${playable.length})`;
+  document.getElementById('ptab').href = w.url;
+  frame.src = w.url;
+  player.classList.add('open');
+  if (location.hash !== '#play:' + slug) history.replaceState(null, '', '#play:' + slug);
+}
+function close() {
+  player.classList.remove('open');
+  frame.src = 'about:blank';
+  history.replaceState(null, '', location.pathname);
+}
+const step = d => play(playable[(cur + d + playable.length) % playable.length].slug);
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-play]');
+  if (t) { e.preventDefault(); play(t.dataset.play); }
+});
+document.getElementById('close').onclick = close;
+document.getElementById('prev').onclick = () => step(-1);
+document.getElementById('next').onclick = () => step(1);
+function keys(e) {
+  if (!player.classList.contains('open')) return;
+  if (e.key === 'Escape') close();
+  else if (e.key === 'ArrowRight') step(1);
+  else if (e.key === 'ArrowLeft') step(-1);
+}
+document.addEventListener('keydown', keys);
+// Same origin, so keys pressed inside the wallpaper still reach the player.
+frame.addEventListener('load', () => { try { frame.contentWindow.addEventListener('keydown', keys); } catch (e) {} });
+function fromHash() {
+  const h = location.hash.match(/^#play:(.+)$/);
+  if (h && playable.some(w => w.slug === h[1])) play(h[1]);
+}
+window.addEventListener('hashchange', fromHash);
+
+(async () => {
+  const stages = folders(await list(ROOT)).sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
+  const read = await Promise.all(stages.map(async stage =>
+    Promise.all(folders(await list(ROOT + stage + '/').catch(() => [])).map(slug => readFolder(stage, slug)))));
+  let html = '';
+  for (const [i, stage] of stages.entries()) {
+    const found = read[i];
+    const built = found.filter(w => w.built), others = found.filter(w => !w.built && w.readme);
+    if (!built.length && !others.length) continue;
+    playable.push(...built);
+    html += `<h2>${esc(stage.replace(/-/g, ' '))} <small>${built.length || others.length}</small></h2>`;
+    if (built.length) html += `<div class="grid">${built.map(card).join('')}</div>`;
+    if (others.length) html += `<div class="others">${built.length ? '<span class="hint">Nothing to play:</span>' : ''}${others.map(w => `<a href="${esc(w.dir)}README.md">${esc(w.slug)}</a>`).join('')}</div>`;
+  }
+  document.getElementById('sections').innerHTML = html;
+  fromHash();
+})().catch(e => {
+  document.getElementById('sections').textContent = `Couldn't read the folders (${e.message}). Serve the repo root with ./wl serve or python -m http.server.`;
+});
+</script>
+</body></html>

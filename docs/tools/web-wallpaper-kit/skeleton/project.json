@@ -1,0 +1,41 @@
+{
+  "title": "Skeleton",
+  "description": "Minimal runtime skeleton for batch 2026-10-22. Replace title, description, art and shader.",
+  "type": "web",
+  "file": "index.html",
+  "preview": "preview.jpg",
+  "general": {
+    "properties": {
+      "motion": {
+        "order": 0,
+        "text": "Motion (0 = still, 50 = tuned, 100 = double)",
+        "type": "slider",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "fraction": false
+      },
+      "glow": {
+        "order": 1,
+        "text": "Glow (0 = off, 50 = tuned)",
+        "type": "slider",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "fraction": false
+      },
+      "renderscale": {
+        "order": 2,
+        "text": "Render scale (%)",
+        "type": "slider",
+        "value": 100,
+        "min": 35,
+        "max": 100,
+        "fraction": false
+      }
+    }
+  },
+  "version": 1,
+  "tags": ["Abstract"],
+  "contentrating": "Everyone"
+}

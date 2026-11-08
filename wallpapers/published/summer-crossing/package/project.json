@@ -1,0 +1,147 @@
+{
+	"contentrating" : "Everyone",
+	"description" : "sunny afternoon at a little seaside railway crossing, trains included\n\n[h2]Settings[/h2]\n[list]\n[*][b]Clouds[/b]: how fast the clouds drift (0 = still).\n[*][b]Sea[/b]: how fast the water moves (0 = still).\n[*][b]Plants wind[/b]: the grass, flowers and weeds (0 = still).\n[*][b]Trees wind[/b]: the trees and bushes along the far verge (0 = still).\n[*][b]Express often[/b] and [b]Local often[/b]: how often each train comes (0 = never).\n[*][b]Train speed[/b]: how fast both trains run.\n[*][b]Rumble[/b]: the picture shakes a little while the express passes (0 = off).\n[*][b]Contrail[/b]: a plane now and then.\n[*][b]Gate arm[/b]: the crossing gate comes down for each train.\n[/list]\nBrightness, contrast and colour are in Wallpaper Engine's own colour options. The frame rate follows its FPS setting.\n\n[h2]Video[/h2]\nhttps://youtu.be/TXCtqxtrrsE",
+	"file" : "index.html",
+	"general" : 
+	{
+		"properties" : 
+		{
+			"clouds" : 
+			{
+				"fraction" : false,
+				"index" : 0,
+				"max" : 100,
+				"min" : 0,
+				"order" : 100,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Clouds",
+				"type" : "slider",
+				"value" : 50
+			},
+			"contrail" : 
+			{
+				"index" : 8,
+				"order" : 108,
+				"text" : "Contrail",
+				"type" : "bool",
+				"value" : true
+			},
+			"express" : 
+			{
+				"fraction" : false,
+				"index" : 4,
+				"max" : 100,
+				"min" : 0,
+				"order" : 104,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Express often",
+				"type" : "slider",
+				"value" : 50
+			},
+			"gate" : 
+			{
+				"index" : 9,
+				"order" : 109,
+				"text" : "Gate arm",
+				"type" : "bool",
+				"value" : true
+			},
+			"local" : 
+			{
+				"fraction" : false,
+				"index" : 5,
+				"max" : 100,
+				"min" : 0,
+				"order" : 105,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Local often",
+				"type" : "slider",
+				"value" : 50
+			},
+			"rumble" : 
+			{
+				"fraction" : false,
+				"index" : 7,
+				"max" : 100,
+				"min" : 0,
+				"order" : 107,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Rumble",
+				"type" : "slider",
+				"value" : 0
+			},
+			"schemecolor" : 
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "0 0 0"
+			},
+			"sea" : 
+			{
+				"fraction" : false,
+				"index" : 1,
+				"max" : 100,
+				"min" : 0,
+				"order" : 101,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Sea",
+				"type" : "slider",
+				"value" : 50
+			},
+			"trainspeed" : 
+			{
+				"fraction" : false,
+				"index" : 6,
+				"max" : 100,
+				"min" : 0,
+				"order" : 106,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Train speed",
+				"type" : "slider",
+				"value" : 50
+			},
+			"treewind" : 
+			{
+				"fraction" : false,
+				"index" : 3,
+				"max" : 100,
+				"min" : 0,
+				"order" : 103,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Trees wind",
+				"type" : "slider",
+				"value" : 50
+			},
+			"wind" : 
+			{
+				"fraction" : false,
+				"index" : 2,
+				"max" : 100,
+				"min" : 0,
+				"order" : 102,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Plants wind",
+				"type" : "slider",
+				"value" : 50
+			}
+		}
+	},
+	"preview" : "preview.gif",
+	"ratingsex" : "none",
+	"ratingviolence" : "none",
+	"tags" : [ "Anime" ],
+	"title" : "Summer Crossing - Seaside Railway",
+	"type" : "web",
+	"version" : 3,
+	"workshopid" : "3836189135",
+	"workshopurl" : "steam://url/CommunityFilePage/3836189135"
+}

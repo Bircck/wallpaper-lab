@@ -1,0 +1,160 @@
+{
+  "folder": "research\\batch-2026-10-22\\kit\\skeleton",
+  "hard": {
+    "project.json parses": true,
+    "type web + file exists": {
+      "pass": true,
+      "detail": {
+        "type": "web",
+        "file": "index.html"
+      }
+    },
+    "preview exists": {
+      "pass": true,
+      "detail": "preview.jpg"
+    },
+    "no <select> in page": true,
+    "no CDN/remote references in source": {
+      "pass": true,
+      "detail": []
+    },
+    "real GPU (not SwiftShader)": {
+      "pass": true,
+      "detail": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    "draws frames": {
+      "pass": true,
+      "detail": [
+        608,
+        608
+      ]
+    },
+    "wallpaperPropertyListener with all 3 methods": {
+      "pass": true,
+      "detail": {
+        "user": "function",
+        "general": "function",
+        "paused": "function"
+      }
+    },
+    "fps 30 honoured (page clock)": {
+      "pass": true,
+      "detail": 30
+    },
+    "fps 10 honoured (page clock)": {
+      "pass": true,
+      "detail": 10
+    },
+    "setPaused(true) stops frames": {
+      "pass": true,
+      "detail": {
+        "frames": 0,
+        "pixelsSame": true
+      }
+    },
+    "resumes after setPaused(false)": {
+      "pass": true,
+      "detail": 18
+    },
+    "0 console/page errors": {
+      "pass": true,
+      "detail": []
+    },
+    "0 non-local requests": {
+      "pass": true,
+      "detail": []
+    },
+    "no file requests outside the folder": {
+      "pass": true,
+      "detail": []
+    },
+    "no failed requests (missing assets)": {
+      "pass": true,
+      "detail": []
+    }
+  },
+  "warn": [],
+  "info": {
+    "sliders": {
+      "motion": [
+        0,
+        50,
+        100
+      ],
+      "glow": [
+        0,
+        50,
+        100
+      ],
+      "renderscale": [
+        35,
+        100,
+        100
+      ]
+    },
+    "folderMB": 0.1,
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1070 Ti (0x00001B82) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "firstDrawMs": 267,
+    "contexts": {
+      "webgl": 610
+    },
+    "diagnostics": {
+      "ready": true,
+      "lost": false,
+      "time": 20.267400000000034,
+      "frames": 610,
+      "paused": false,
+      "fps": 30,
+      "settings": {
+        "motion": 1,
+        "glow": 1,
+        "quality": 1,
+        "fps": 30
+      },
+      "width": 1920,
+      "height": 1080
+    },
+    "perfLockWaitS": 0,
+    "fps30": 30,
+    "frameGapsMs_fps30": {
+      "p50": 33.3,
+      "p95": 33.5,
+      "max": 34.2
+    },
+    "fps10": 10,
+    "frameGapsMs_fps10": {
+      "p50": 99.9,
+      "p95": 100.1,
+      "max": 100.1
+    },
+    "cost1080": {
+      "mainThreadMsPerFrame": 0.23,
+      "scriptMsPerFrame": 0.04,
+      "rafCallbackMs": 0.01,
+      "mainThreadCpuPctOfCore": 0.7,
+      "syncedFrameMsMedian": 1.4,
+      "syncedFrameMsP90": 1.9
+    },
+    "pausedRafRequestsPerS": 0,
+    "sliderAtMin": {
+      "motion": {
+        "frames": 15,
+        "rafPerS": 60,
+        "canvasPx": 2073600
+      },
+      "glow": {
+        "frames": 15,
+        "rafPerS": 60,
+        "canvasPx": 2073600
+      },
+      "renderscale": {
+        "frames": 15,
+        "rafPerS": 60,
+        "canvasPx": 254016
+      }
+    },
+    "contact": "C:\\projects\\fun\\wallpaper-lab\\research\\batch-2026-10-22\\verify-out\\skeleton\\contact.png"
+  },
+  "pass": true,
+  "note": "Headless Chrome on the local GPU: timings are an upper bound, not a Wallpaper Engine host measurement."
+}

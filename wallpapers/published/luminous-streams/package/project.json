@@ -1,0 +1,99 @@
+{
+	"contentrating" : "Everyone",
+	"description" : "A deep violet nebula split by a river of gold and cyan lightning. The cloud banks slowly roll and re-form, charges run along the stream and fine dust drifts through. Dark enough to sit behind your icons.\n\n[h2]Settings[/h2]\n[list]\n[*][b]Cloud amount[/b]: how much the cloud banks move (0 = still).\n[*][b]Cloud speed[/b]: how fast they move (0 = frozen).\n[*][b]Lightning intensity[/b]: how bright the charges along the stream are (0 = off).\n[*][b]Drifting dust[/b]: fine dust floating through the scene (0 = off).\n[*][b]Fog amount[/b]: soft coloured fog in the dark gaps (0 = off).\n[*][b]Render scale[/b]: lower it to save GPU on 4K screens or older cards.\n[/list]\nEvery slider at 50 is the tuned look. Brightness, contrast and colour are in Wallpaper Engine's own colour options. The frame rate follows its FPS setting.\n\n[h2]Video[/h2]\nhttps://youtu.be/pFgJkYvbZco",
+	"file" : "index.html",
+	"general" : 
+	{
+		"properties" : 
+		{
+			"cloudamount" : 
+			{
+				"fraction" : false,
+				"index" : 0,
+				"max" : 100,
+				"min" : 0,
+				"order" : 100,
+				"precision" : 0,
+				"text" : "Cloud amount",
+				"type" : "slider",
+				"value" : 50
+			},
+			"cloudspeed" : 
+			{
+				"fraction" : false,
+				"index" : 1,
+				"max" : 100,
+				"min" : 0,
+				"order" : 101,
+				"precision" : 0,
+				"text" : "Cloud speed",
+				"type" : "slider",
+				"value" : 50
+			},
+			"dustamount" : 
+			{
+				"fraction" : false,
+				"index" : 3,
+				"max" : 100,
+				"min" : 0,
+				"order" : 103,
+				"precision" : 0,
+				"text" : "Drifting dust",
+				"type" : "slider",
+				"value" : 50
+			},
+			"fogamount" : 
+			{
+				"fraction" : false,
+				"index" : 4,
+				"max" : 100,
+				"min" : 0,
+				"order" : 104,
+				"precision" : 0,
+				"text" : "Fog amount",
+				"type" : "slider",
+				"value" : 50
+			},
+			"lightninglevel" : 
+			{
+				"fraction" : false,
+				"index" : 2,
+				"max" : 100,
+				"min" : 0,
+				"order" : 102,
+				"precision" : 0,
+				"text" : "Lightning intensity",
+				"type" : "slider",
+				"value" : 50
+			},
+			"renderscale" : 
+			{
+				"fraction" : false,
+				"index" : 5,
+				"max" : 100,
+				"min" : 0,
+				"order" : 105,
+				"precision" : 0,
+				"text" : "Render scale",
+				"type" : "slider",
+				"value" : 50
+			},
+			"schemecolor" : 
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "0 0 0"
+			}
+		}
+	},
+	"preview" : "preview.gif",
+	"ratingsex" : "none",
+	"ratingviolence" : "none",
+	"tags" : [ "Abstract" ],
+	"title" : "Luminous Streams - Electric Nebula",
+	"type" : "web",
+	"version" : 5,
+	"workshopid" : "3827937921",
+	"workshopurl" : "steam://url/CommunityFilePage/3827937921"
+}

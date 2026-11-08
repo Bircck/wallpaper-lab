@@ -1,0 +1,57 @@
+{
+	"contentrating" : "Everyone",
+	"description" : "A soft pastel nebula in peach, periwinkle and seafoam, with slow drifting cloud currents. Calm enough to sit behind your icons all day.\n\n[h2]Settings[/h2]\n[list]\n[*][b]Motion speed[/b]: how fast the clouds drift (0 = still).\n[*][b]Cloud movement[/b]: how far they move (0 = still, 50 = tuned, 100 = double).\n[*][b]Render scale[/b]: lower it to save GPU on 4K screens or older cards.\n[/list]\nBrightness, contrast and colour are in Wallpaper Engine's own colour options. The frame rate follows its FPS setting.\n\n[h2]Video[/h2]\nhttps://youtu.be/CjZC_7ZGiQk",
+	"file" : "index.html",
+	"general" : 
+	{
+		"properties" : 
+		{
+			"cloudmovement" : 
+			{
+				"fraction" : false,
+				"max" : 100,
+				"min" : 0,
+				"order" : 1,
+				"text" : "Cloud movement",
+				"type" : "slider",
+				"value" : 50
+			},
+			"motionspeed" : 
+			{
+				"fraction" : false,
+				"max" : 100,
+				"min" : 0,
+				"order" : 0,
+				"text" : "Motion speed",
+				"type" : "slider",
+				"value" : 30
+			},
+			"renderscale" : 
+			{
+				"fraction" : false,
+				"max" : 100,
+				"min" : 35,
+				"order" : 2,
+				"text" : "Render scale",
+				"type" : "slider",
+				"value" : 100
+			},
+			"schemecolor" : 
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "0 0 0"
+			}
+		}
+	},
+	"preview" : "preview.gif",
+	"ratingsex" : "none",
+	"ratingviolence" : "none",
+	"tags" : [ "Abstract" ],
+	"title" : "Opaline - Pastel Nebula",
+	"type" : "web",
+	"version" : 2,
+	"workshopid" : "3827277599",
+	"workshopurl" : "steam://url/CommunityFilePage/3827277599"
+}

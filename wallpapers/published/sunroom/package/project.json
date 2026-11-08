@@ -1,0 +1,207 @@
+{
+	"contentrating" : "Everyone",
+	"description" : "Chill paper dune background with day and night, set it yourself or let it follow your PC clock ^^\n\n[h2]Settings[/h2]\n[list]\n[*][b]Follow PC clock[/b]: the time of day follows your PC.\n[*][b]Time of day[/b]: pick it yourself (0 = night, 50 = sunset, 100 = noon).\n[*][b]Plant[/b]: branch, dune grass, pampas or none.\n[*][b]Plant size[/b]: how big the plant is (0 = no plant).\n[*][b]Wind[/b]: how much the plant moves (0 = still).\n[*][b]Tempo[/b]: how fast everything moves (0 = still).\n[*][b]Rise and fall[/b]: how much the dunes go up and down.\n[*][b]Roll sideways[/b]: how fast the dunes slide along.\n[*][b]Curve height[/b]: how tall the curves are.\n[*][b]Number of curves[/b]: how many curves fit on screen.\n[*][b]Sun size[/b]: size of the sun and moon.\n[*][b]Sun height[/b]: how high they sit.\n[*][b]Sand lines[/b]: the fine lines on the front dunes (0 = off).\n[*][b]Dust[/b]: the specks in the air (0 = off).\n[/list]\nBrightness, contrast and colour are in Wallpaper Engine's own colour options. The frame rate follows its FPS setting.\n\n[h2]Video[/h2]\nhttps://youtu.be/-LcWhYW59Ko",
+	"file" : "index.html",
+	"general" : 
+	{
+		"properties" : 
+		{
+			"dunecurves" : 
+			{
+				"fraction" : false,
+				"index" : 8,
+				"max" : 100,
+				"min" : 0,
+				"order" : 108,
+				"precision" : 0,
+				"text" : "Curve height",
+				"type" : "slider",
+				"value" : 50
+			},
+			"dunehills" : 
+			{
+				"fraction" : false,
+				"index" : 9,
+				"max" : 100,
+				"min" : 0,
+				"order" : 109,
+				"precision" : 0,
+				"text" : "Number of curves",
+				"type" : "slider",
+				"value" : 50
+			},
+			"dunemove" : 
+			{
+				"fraction" : false,
+				"index" : 6,
+				"max" : 100,
+				"min" : 0,
+				"order" : 106,
+				"precision" : 0,
+				"text" : "Rise and fall",
+				"type" : "slider",
+				"value" : 50
+			},
+			"duneroll" : 
+			{
+				"fraction" : false,
+				"index" : 7,
+				"max" : 100,
+				"min" : 0,
+				"order" : 107,
+				"precision" : 0,
+				"text" : "Roll sideways",
+				"type" : "slider",
+				"value" : 50
+			},
+			"dust" : 
+			{
+				"fraction" : false,
+				"index" : 13,
+				"max" : 100,
+				"min" : 0,
+				"order" : 113,
+				"precision" : 0,
+				"text" : "Dust",
+				"type" : "slider",
+				"value" : 50
+			},
+			"followclock" : 
+			{
+				"index" : 0,
+				"order" : 100,
+				"text" : "Follow PC clock",
+				"type" : "bool",
+				"value" : false
+			},
+			"lines" : 
+			{
+				"fraction" : false,
+				"index" : 12,
+				"max" : 100,
+				"min" : 0,
+				"order" : 112,
+				"precision" : 0,
+				"text" : "Sand lines",
+				"type" : "slider",
+				"value" : 50
+			},
+			"plantsize" : 
+			{
+				"fraction" : false,
+				"index" : 3,
+				"max" : 100,
+				"min" : 0,
+				"order" : 103,
+				"precision" : 0,
+				"text" : "Plant size",
+				"type" : "slider",
+				"value" : 50
+			},
+			"plantstyle" : 
+			{
+				"index" : 2,
+				"options" : 
+				[
+					{
+						"label" : "Branch",
+						"value" : "sprig"
+					},
+					{
+						"label" : "Dune grass",
+						"value" : "grass"
+					},
+					{
+						"label" : "Pampas",
+						"value" : "pampas"
+					},
+					{
+						"label" : "None",
+						"value" : "none"
+					}
+				],
+				"order" : 102,
+				"text" : "Plant",
+				"type" : "combo",
+				"value" : "sprig"
+			},
+			"schemecolor" : 
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "0 0 0"
+			},
+			"sunheight" : 
+			{
+				"fraction" : false,
+				"index" : 11,
+				"max" : 100,
+				"min" : 0,
+				"order" : 111,
+				"precision" : 0,
+				"text" : "Sun height",
+				"type" : "slider",
+				"value" : 50
+			},
+			"sunsize" : 
+			{
+				"fraction" : false,
+				"index" : 10,
+				"max" : 100,
+				"min" : 0,
+				"order" : 110,
+				"precision" : 0,
+				"text" : "Sun size",
+				"type" : "slider",
+				"value" : 50
+			},
+			"tempo" : 
+			{
+				"fraction" : false,
+				"index" : 5,
+				"max" : 100,
+				"min" : 0,
+				"order" : 105,
+				"precision" : 0,
+				"text" : "Tempo",
+				"type" : "slider",
+				"value" : 50
+			},
+			"timeofday" : 
+			{
+				"condition" : "followclock.value == false",
+				"fraction" : false,
+				"index" : 1,
+				"max" : 100,
+				"min" : 0,
+				"order" : 101,
+				"precision" : 0,
+				"text" : "Time of day",
+				"type" : "slider",
+				"value" : 50
+			},
+			"wind" : 
+			{
+				"fraction" : false,
+				"index" : 4,
+				"max" : 100,
+				"min" : 0,
+				"order" : 104,
+				"precision" : 0,
+				"text" : "Wind",
+				"type" : "slider",
+				"value" : 50
+			}
+		}
+	},
+	"preview" : "preview.gif",
+	"ratingsex" : "none",
+	"ratingviolence" : "none",
+	"tags" : [ "Landscape" ],
+	"title" : "Sunroom - Paper Dunes",
+	"type" : "web",
+	"version" : 2,
+	"workshopid" : "3833207645",
+	"workshopurl" : "steam://url/CommunityFilePage/3833207645"
+}

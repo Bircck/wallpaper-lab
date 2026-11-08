@@ -1,0 +1,71 @@
+{
+  "title": "Rain Lantern Alley",
+  "description": "A quiet Japanese back alley at night in light rain: a painted anime background where the rain, the lanterns, the puddle, the stall's steam and curtain, the leaves, the mist and the clouds each have a small life of their own. Every minute or so a gust of wind passes through.",
+  "type": "web",
+  "file": "index.html",
+  "preview": "preview.jpg",
+  "general": {
+    "properties": {
+      "rain": {
+        "order": 0,
+        "text": "Rain",
+        "type": "slider",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "fraction": false
+      },
+      "wind": {
+        "order": 1,
+        "text": "Wind",
+        "type": "slider",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "fraction": false
+      },
+      "mist": {
+        "order": 2,
+        "text": "Mist",
+        "type": "slider",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "fraction": false
+      },
+      "lights": {
+        "order": 3,
+        "text": "Lights",
+        "type": "slider",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "fraction": false
+      },
+      "lightning": {
+        "order": 4,
+        "text": "Lightning",
+        "type": "slider",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "fraction": false
+      },
+      "renderscale": {
+        "order": 5,
+        "text": "Render scale",
+        "type": "slider",
+        "value": 100,
+        "min": 35,
+        "max": 100,
+        "fraction": false
+      }
+    }
+  },
+  "version": 2,
+  "tags": [
+    "Anime",
+    "Landscape"
+  ],
+  "contentrating": "Everyone"
+}

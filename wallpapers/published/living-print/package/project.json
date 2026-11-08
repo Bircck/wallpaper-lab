@@ -1,0 +1,113 @@
+{
+	"contentrating" : "Everyone",
+	"description" : "Old Japanese woodblock print that's quietly come alive\n\n[h2]Settings[/h2]\n[list]\n[*][b]Background[/b]: the colour around the print.\n[*][b]Speed[/b]: how fast everything moves (0 = still).\n[*][b]Wind[/b]: how much the pines and plants sway (0 = still).\n[*][b]Water[/b]: the lake, the boat and its sail (0 = still).\n[*][b]Sky[/b]: how much the sky drifts (0 = still).\n[*][b]Wildlife[/b]: the crane, dragonfly and fish (0 = none, 75 and up = two cranes).\n[*][b]Render scale[/b]: lower it to save GPU on 4K screens or older cards.\n[/list]\nBrightness, contrast and colour are in Wallpaper Engine's own colour options. The frame rate follows its FPS setting.\n\n[h2]Video[/h2]\nhttps://youtu.be/M3nPVh6UuDc",
+	"file" : "index.html",
+	"general" : 
+	{
+		"properties" : 
+		{
+			"backgroundcolor" : 
+			{
+				"index" : 0,
+				"order" : 100,
+				"text" : "Background",
+				"type" : "color",
+				"value" : "0.992 0.969 0.941"
+			},
+			"motionspeed" : 
+			{
+				"fraction" : false,
+				"index" : 1,
+				"max" : 100,
+				"min" : 0,
+				"order" : 101,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Speed",
+				"type" : "slider",
+				"value" : 50
+			},
+			"renderscale" : 
+			{
+				"fraction" : false,
+				"index" : 6,
+				"max" : 100,
+				"min" : 0,
+				"order" : 106,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Render scale",
+				"type" : "slider",
+				"value" : 50
+			},
+			"schemecolor" : 
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "0.16 0.29 0.42"
+			},
+			"skymovement" : 
+			{
+				"fraction" : false,
+				"index" : 4,
+				"max" : 100,
+				"min" : 0,
+				"order" : 104,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Sky",
+				"type" : "slider",
+				"value" : 50
+			},
+			"watermovement" : 
+			{
+				"fraction" : false,
+				"index" : 3,
+				"max" : 100,
+				"min" : 0,
+				"order" : 103,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Water",
+				"type" : "slider",
+				"value" : 50
+			},
+			"wildlife" : 
+			{
+				"fraction" : false,
+				"index" : 5,
+				"max" : 100,
+				"min" : 0,
+				"order" : 105,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Wildlife",
+				"type" : "slider",
+				"value" : 50
+			},
+			"windstrength" : 
+			{
+				"fraction" : false,
+				"index" : 2,
+				"max" : 100,
+				"min" : 0,
+				"order" : 102,
+				"precision" : 0,
+				"step" : 1,
+				"text" : "Wind",
+				"type" : "slider",
+				"value" : 50
+			}
+		}
+	},
+	"preview" : "preview.gif",
+	"ratingsex" : "none",
+	"ratingviolence" : "none",
+	"tags" : [ "Landscape" ],
+	"title" : "Living Print - Hokusai's Lake Suwa",
+	"type" : "web",
+	"version" : 2,
+	"workshopid" : "3834391346",
+	"workshopurl" : "steam://url/CommunityFilePage/3834391346"
+}

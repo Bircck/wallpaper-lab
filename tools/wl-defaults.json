@@ -1,0 +1,12 @@
+{
+  "_note": "Install folder names under <WE>/projects/myprojects that already exist for released or installed wallpapers. Keep them, so WE keeps the same project and its saved slider values. Anything not listed uses <slug>-wallpaper-lab. A wallpaper can override with installFolder in making-of/wl.json.",
+  "installFolders": {
+    "living-print": "living-suwa-wallpaper-lab",
+    "straw-hat-cove": "straw-hat-a1-live-wallpaper-lab",
+    "luminous-streams": "luminous-streams-wallpaper-lab",
+    "moon-cat": "moon-cat-wallpaper-lab",
+    "opaline": "opaline-wallpaper-lab",
+    "golden-shallows": "golden-shallows-wallpaper-lab",
+    "sunroom": "sunroom-wallpaper-lab"
+  }
+}

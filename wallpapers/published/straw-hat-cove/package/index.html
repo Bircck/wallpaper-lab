@@ -1,0 +1,18 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Straw Hat Cove</title><style>*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden}html{background:#0d4c57 no-repeat;background-size:cover}canvas{position:fixed;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity .8s}#err{position:fixed;inset:0;display:none;place-items:center;color:#fff7df;font:16px Georgia,serif;background:#0d4c57}</style></head><body><div id="err" role="alert">WebGL2 is required for this wallpaper.</div><script>(function(){
+// ?v= on localhost only, so a local preview never shows stale cached files; Wallpaper Engine loads plain paths
+var b=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?"?v="+Date.now():"";window.BUST=b;
+// poster.jpg is the first frame (time 0, sliders 50; make-poster.cjs, not in this repo), shown at once and framed like coverUV
+// at the default focus. scene.js starts after it has painted, because without background compiling the shader blocks the page for
+// several seconds at every start (WE keeps no shader cache); the canvas fades in over the poster when its first frame is ready.
+// Until scene.js runs, Wallpaper Engine calls are queued and replayed; afterwards this stand-in forwards to the real listener,
+// in case the host kept a reference to it. Started by timers, not animation frames: those don't fire while WE hides the page.
+var r=document.documentElement,q=[],stub={};
+["applyUserProperties","applyGeneralProperties","setPaused"].forEach(function(n){stub[n]=function(a){var l=window.wallpaperPropertyListener;if(l!==stub){if(l&&l[n])l[n](a)}else q.push([n,a])}});
+window.wallpaperPropertyListener=stub;
+function place(){var W=innerWidth,H=innerHeight,h=W*1440/2560;r.style.backgroundPosition=h<H?"50% 50%":"50% "+(-Math.max(0,Math.min(h-H,.56*h-H/2)))+"px"}
+place();addEventListener("resize",place);
+var started=false;function go(){if(started)return;started=true;var s=document.createElement("script");s.src="scene.js"+b;
+ s.onload=function(){var l=window.wallpaperPropertyListener;q.forEach(function(c){if(l&&l[c[0]])l[c[0]](c[1])})};document.body.appendChild(s)}
+var i=new Image();i.onload=function(){r.style.backgroundImage="url(poster.jpg"+b+")";(i.decode?i.decode():Promise.resolve()).then(function(){setTimeout(go,50)},go)};
+i.onerror=go;i.src="poster.jpg"+b;setTimeout(go,400);
+})()</script></body></html>

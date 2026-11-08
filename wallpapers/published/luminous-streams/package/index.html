@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Luminous Streams</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07070d url(assets/poster.jpg) center/cover no-repeat}canvas{display:block;width:100vw;height:100vh;opacity:0;transition:opacity .6s}canvas.on{opacity:1}</style></head><body><canvas aria-label="Luminous Streams animated nebula"></canvas><script>
+// The opening frame (poster.jpg) shows at once. wallpaper.js starts after that first paint, because compiling the shader blocks the page
+// for about a second. Until then Wallpaper Engine calls are queued; afterwards this stand-in forwards to the real listener, in case a host
+// kept a reference to it. The canvas fades in over the poster after its first frame.
+(()=>{const queue=[],stub={};
+for(const name of ['applyUserProperties','applyGeneralProperties','setPaused'])stub[name]=arg=>{const real=window.wallpaperPropertyListener;if(real!==stub)real?.[name]?.(arg);else queue.push([name,arg]);};
+window.wallpaperPropertyListener=stub;
+let started=false;const start=()=>{if(started)return;started=true;const s=document.createElement('script');s.src='wallpaper.js';s.onload=()=>{for(const [name,arg] of queue)window.wallpaperPropertyListener[name]?.(arg);};document.body.append(s);};
+// Start once the poster is decoded and has had a moment to paint (no animation-frame request, so pause checks stay clean).
+const poster=new Image();poster.src='assets/poster.jpg';poster.decode().then(()=>setTimeout(start,50),start);setTimeout(start,400);})();
+</script></body></html>

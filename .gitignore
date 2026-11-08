@@ -1,0 +1,106 @@
+# wallpapers/<stage>/<slug>/: README, NOTES and package/ are tracked in full. making-of/ and wallpapers/ideas/
+# track code, notes and data; generated media, captures, frames, models and environments stay local.
+
+# Environments and caches
+.venv/
+venv/
+node_modules/
+__pycache__/
+*.pyc
+.numba-cache/
+.cache/
+.DS_Store
+Thumbs.db
+*.log
+*.pid
+*.stackdump
+.claude/worktrees/
+.claude/settings.local.json
+
+# Releases and parked folders
+exports/
+to-delete/
+*.zip
+
+# Model weights and other big binaries
+*.onnx
+*.onnx.data
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.gguf
+*.bin
+*.npy
+*.npz
+*.exr
+*.hdr
+
+# Blender and 3D sources
+*.blend
+*.blend1
+*.blend2
+*.fbx
+*.assbin
+*.glb
+*.dae
+
+# Generated media, captures, nested checkouts and model caches under wallpapers/
+wallpapers/**/*.png
+wallpapers/**/*.jpg
+wallpapers/**/*.jpeg
+wallpapers/**/*.webp
+wallpapers/**/*.gif
+wallpapers/**/*.mp4
+wallpapers/**/*.webm
+wallpapers/**/*.mov
+wallpapers/**/sam2-src/
+wallpapers/**/onnxruntime-src/
+wallpapers/**/hf/
+wallpapers/**/models/
+wallpapers/**/local-model/user/
+wallpapers/**/host-events*.jsonl
+wallpapers/**/verify/
+wallpapers/**/verify-out/
+wallpapers/**/captures/
+wallpapers/**/caps/
+wallpapers/**/snapshots/
+wallpapers/**/frames/
+wallpapers/**/previews/
+wallpapers/**/host-*/
+wallpapers/**/baseline-*/
+wallpapers/**/installed-before*/
+wallpapers/**/work/
+wallpapers/**/logs/
+wallpapers/**/out/
+# Approved-look snapshots for parity checks (old single-file runtimes with base64 art, 13-30 MB each)
+wallpapers/**/making-of/**/approved-reference/
+wallpapers/**/making-of/historical/lab/
+
+# Always tracked (these come after the rules above, because the last matching rule wins)
+# The package is exactly what Wallpaper Engine loads and the Workshop gets.
+!wallpapers/*/*/package/**
+
+# Working files: build sources, notes, checks and agent instructions stay on disk but are not published.
+# The repo itself holds the finished wallpapers (README + package), shared tools, technique docs and ideas.
+wallpapers/*/*/making-of/
+wallpapers/*/*/NOTES.md
+wallpapers/ideas/Working-ideas/*/making-of/
+wallpapers/ideas/Working-ideas/*/NOTES.md
+wallpapers/RELEASE-CHECKLIST.md
+wallpapers/release-review.html
+wallpapers/ideas/3D-attempts/
+docs/history/
+docs/approaches/batch-council/
+BACKLOG.md
+AGENTS.md
+CLAUDE.md
+PUBLIC-AUDIT.md
+.claude/
+
+# Shared model weights (Finegrain, 378 MB) and the GPU venv (4.9 GB): local only
+docs/tools/models/
+docs/tools/gpu-venv/
+
+# GPU lock file written next to docs/tools/gpu_lock.py
+docs/tools/gpu.lock

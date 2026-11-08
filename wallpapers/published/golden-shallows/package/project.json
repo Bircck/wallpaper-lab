@@ -1,0 +1,77 @@
+{
+	"contentrating" : "Everyone",
+	"description" : "Chill golden-hour background with a little friendly crab :)\n\n[h2]Settings[/h2]\n[list]\n[*][b]Waves[/b]: all the movement on the water (0 = glassy).\n[*][b]Seabed[/b]: how much of the sandy bottom shows through.\n[*][b]Trees[/b]: how much the trees move in the wind (0 = still).\n[*][b]Clouds[/b]: how fast the clouds drift (0 = still).\n[*][b]Crab[/b]: how often the crab comes out (0 = never).\n[/list]\nBrightness, contrast and colour are in Wallpaper Engine's own colour options. The frame rate follows its FPS setting.\n\n[h2]Video[/h2]\nhttps://youtu.be/m6V0bxouHUc",
+	"file" : "index.html",
+	"general" :
+	{
+		"properties" :
+		{
+			"waveamount" :
+			{
+				"fraction" : false,
+				"max" : 100,
+				"min" : 0,
+				"order" : 0,
+				"text" : "Waves",
+				"type" : "slider",
+				"value" : 50
+			},
+			"seabed" :
+			{
+				"fraction" : false,
+				"max" : 100,
+				"min" : 0,
+				"order" : 1,
+				"text" : "Seabed",
+				"type" : "slider",
+				"value" : 50
+			},
+			"treewind" :
+			{
+				"fraction" : false,
+				"max" : 100,
+				"min" : 0,
+				"order" : 2,
+				"text" : "Trees",
+				"type" : "slider",
+				"value" : 50
+			},
+			"clouds" :
+			{
+				"fraction" : false,
+				"max" : 100,
+				"min" : 0,
+				"order" : 3,
+				"text" : "Clouds",
+				"type" : "slider",
+				"value" : 50
+			},
+			"crab" :
+			{
+				"fraction" : false,
+				"max" : 100,
+				"min" : 0,
+				"order" : 4,
+				"text" : "Crab",
+				"type" : "slider",
+				"value" : 50
+			},
+			"schemecolor" :
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "0.62 0.53 0.47"
+			}
+		}
+	},
+	"preview" : "preview.gif",
+	"ratingsex" : "none",
+	"ratingviolence" : "none",
+	"tags" : [ "Landscape" ],
+	"title" : "Golden Shallows - Sunset Cove",
+	"type" : "web",
+	"version" : 4,
+	"workshopid" : "3832664548",
+	"workshopurl" : "steam://url/CommunityFilePage/3832664548"
+}
